@@ -1,0 +1,26 @@
+{
+	"files.associations": {
+		"*.c": "c",
+		"*.h": "c",
+		"*.cpp": "cpp",
+		"*.hpp": "cpp",
+		"__hash_table": "cpp",
+		"__node_handle": "cpp",
+		"__split_buffer": "cpp",
+		"memory_resource": "cpp",
+		"list": "cpp",
+		"memory": "cpp",
+		"sstream": "cpp",
+		"string": "cpp",
+		"unordered_map": "cpp",
+		"vector": "cpp",
+		"cstddef": "cpp",
+		"iterator": "cpp",
+		"__config": "cpp",
+		"__debug": "cpp",
+		"deque": "cpp",
+		"iosfwd": "cpp",
+		"cstdlib": "cpp",
+		"cmath": "cpp"
+	}
+}
