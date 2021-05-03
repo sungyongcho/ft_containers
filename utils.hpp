@@ -6,15 +6,16 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:13:03 by sucho             #+#    #+#             */
-/*   Updated: 2021/04/30 16:16:10 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/03 18:02:51 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #pragma once
 
 #include <unistd.h>
 
-#include <allocator> // for allocator
+#include <memory> //for allocator
 #include <cmath>
 #include <cstdlib>  //for ptrdiff_h, idk rest yet
 #include <iostream>
@@ -47,7 +48,7 @@ Iterator next(Iterator first, size_t number) {
 }
 
 template <typename Iterator>
-void advance(I &first, size_t number) {
+void advance(Iterator &first, size_t number) {
   while (number--)
     ++first;
 }
@@ -100,7 +101,7 @@ bool sort_ascend(T a, T b) {
   return (a < b);
 }
 
-template <typenamt T>
+template <typename T>
 bool sort_descend(T a, T b) {
   return (a > b);
 }
@@ -141,12 +142,12 @@ long long substract_size_t(const size_t &a, const size_t &b) {
 template <bool Condition, class T = void>
 struct enable_if {};
 template <class T>
-struct enable_if<true, T> { typedef T type; }
+struct enable_if<true, T> { typedef T type; };
 
 template <typename T>
 struct wrapper {
   typedef T type;
-}
+};
 
 template <class T>
 struct remove_const {

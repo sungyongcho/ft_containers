@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/04/30 16:46:52 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/03 18:03:54 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ class queue;
 
 template <typename T>
 struct DoublyLinkedList {
-  lst_node *next;
-  lst_node *prev;
+  DoublyLinkedList *next;
+  DoublyLinkedList *prev;
   T element;
   DoublyLinkedList(T val) : element(val) {}
 };
@@ -69,7 +69,7 @@ class base_list_iterator {
   base_list_iterator(node_pointer p) : ptr(p) {}
   base_list_iterator(const non_const_iterator &target) : ptr(target.ptr) {}
 
-  virtual ~base_list_iterator()
+  virtual ~base_list_iterator();
 
       base_list_iterator &
       operator=(const non_const_iterator &target) {
@@ -119,7 +119,7 @@ class base_list_iterator {
 
   bool operator==(node_pointer b) { return (ptr == b); }
   bool operator!=(node_pointer b) { return (ptr != b); }
-}
+};
 
 template <class U>
 class base_reverse_iterator {
