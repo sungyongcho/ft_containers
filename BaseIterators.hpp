@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/04 22:01:39 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/04 22:31:15 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,12 +298,63 @@ class base_vector_iterator {
     return base_vector_iterator(ptr + n);
   }
 
-  inline base_vector_iterator &operator+=(difference_type n)
-  {
+  inline base_vector_iterator &operator+=(difference_type n) {
     ptr += n;
     return (*this);
   }
 
+  inline base_vector_iterator operator-(difference_type n) {
+    return base_vector_iterator(ptr - n);
+  }
+
+  inline long operator-(const non_const_iterator &other) {
+    return ((long)ptr - (long)other.ptr / (long)sizeof(value_type));
+  }
+
+  inline long operator-(const const_iterator &other) {
+    return ((long)ptr - (long)other.ptr / (long)sizeof(value_type));
+  }
+
+  inline base_vector_iterator &operator-=(difference_type n) {
+    ptr -= n;
+    return (*this);
+  }
+
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator==(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr == b.ptr);
+  }
+
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator!=(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr != b.ptr);
+  }
+
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator<(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr < b.ptr);
+  }
+
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator<=(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr <= b.ptr);
+  }
+
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator>(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr > b.ptr);
+  }
+
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator>=(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr != b.ptr);
+  }
 
 };
 
