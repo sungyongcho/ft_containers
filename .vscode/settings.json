@@ -21,6 +21,21 @@
 		"deque": "cpp",
 		"iosfwd": "cpp",
 		"cstdlib": "cpp",
-		"cmath": "cpp"
+		"cmath": "cpp",
+		"istream": "cpp",
+		"ostream": "cpp",
+		"filesystem": "cpp",
+		"__tree": "cpp",
+		"atomic": "cpp",
+		"ios": "cpp",
+		"map": "cpp",
+		"set": "cpp",
+		"system_error": "cpp",
+		"array": "cpp",
+		"bitset": "cpp",
+		"initializer_list": "cpp",
+		"queue": "cpp",
+		"stack": "cpp",
+		"string_view": "cpp"
 	}
 }

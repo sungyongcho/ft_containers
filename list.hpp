@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   list.hpp                                           :+:      :+:    :+:   */
+/*   List.hpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:32:01 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/03 18:12:38 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/04 19:23:28 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "iterator.hpp"
+#include "BaseIterator.hpp"
 
 namespace ft {
 template <typename T, class Alloc>
@@ -44,7 +44,7 @@ class list {
   void empty_list();
 
   typedef typename Alloc::template rebind<Node>::other node_alloc;
-  typedef typename Alloc::template rebind<Node>::other sentry_alloc;
+  typedef typename Alloc::template rebind<Sentry>::other sentry_alloc;
 
   template <typename U, bool is_const>
   class list_iterator : public base_list_iterator<U, is_const> {
@@ -55,7 +55,7 @@ class list {
    public:
     typedef U value_type;
     typedef typename choose<is_const, const U &, U &>::type reference;
-    typedef typename choose<is_const, const U &, U &>::type pointer;
+    typedef typename choose<is_const, const U *, U *>::type pointer;
     typedef std::ptrdiff_t difference_type;
     typedef std::random_access_iterator_tag iterator_category;
     typedef typename remove_const<U>::type non_const_type;
@@ -109,7 +109,7 @@ class list {
   size_t size() const;
   void resize(size_type n, value_type val = value_type());
   size_t max_size();
-  bool empty();
+  bool empty() const;
   void push_back(const T &e);
   void push_front(const T &e);
   void pop_back();
@@ -125,7 +125,8 @@ class list {
   reverse_iterator rend();
   const_reverse_iterator rend() const;
 
-  template<typename I> void assign(I first, I last);
+  template <typename I>
+  void assign(I first, I last);
   void assign(size_type n, const value_type &val);
 
   iterator insert(iterator position, const value_type &val = value_type());
@@ -149,14 +150,16 @@ class list {
   void remove(const value_type &val);
   template <class Predicate>
   void remove_if(Predicate pred);
-
   void unique();
+
   template <class BinaryPredicate>
   void unique(BinaryPredicate binary_pred);
   void merge(list<T, Alloc> &x);
+
   template <class Compare>
   void merge(list<T, Alloc> &x, Compare comp);
   void sort();
+
   template <class Compare>
   void sort(Compare comp);
   void reverse();
@@ -181,7 +184,7 @@ void list<T, Alloc>::link(Node *n1, Node *n2) {
   n2->prev = n1;
 }
 template <typename T, class Alloc>
-typename list<T, Alloc>::Node* list<T, Alloc>::unlink(Node *e) {
+typename list<T, Alloc>::Node *list<T, Alloc>::unlink(Node *e) {
   link(e->prev, e->next);
   return (e);
 }
@@ -197,21 +200,21 @@ void list<T, Alloc>::delete_node(Node *e) {
   unlink(e);
   node_alloc(_alloc).destroy(e);
   node_alloc(_alloc).deallocate(e, 1);
-  e = nullptr;
+  e = NULL;
 }
 
 template <typename T, class Alloc>
 typename list<T, Alloc>::Node *list<T, Alloc>::create_node(const T &val) {
   Node *e = node_alloc(_alloc).allocate(1);
   node_alloc(_alloc).construct(e, Node(val));
-  e->data = val;
+  e->element = val;
   return e;
 }
 
 template <typename T, class Alloc>
 void list<T, Alloc>::swap_nodes(Node *n1, Node *n2) {
   if (n1->next == n2 && n2->prev == n1) {
-    unlike(n1);
+    unlink(n1);
     insert_node(n1, n2, n2->next);
   } else if (n2->next == n1 && n1->prev == n2) {
     unlink(n2);
@@ -240,38 +243,49 @@ void list<T, Alloc>::empty_list() {
   _size = 0;
 }
 /* const*/
-template <typename t, class Alloc>
-list<T, alloc>::list(const allocator_type &alloc)
-    : size(0), _alloc(alloc) {
-  sentry = node_alloc(_alloc).allocate(1);
-  sentry_alloc(_alloc).construct((Sentry *)sentry, Sentry());
-  link(sentry, sentry);
+template <typename T, class Alloc>
+list<T, Alloc>::list(const allocator_type &alloc)
+    : _size(0), _alloc(alloc) {
+  _sentry = node_alloc(_alloc).allocate(1);
+  sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
+  link(_sentry, _sentry);
 }
 
 template <typename T, class Alloc>
 list<T, Alloc>::list(size_t n, const T &val, const allocator_type &alloc)
     : _size(0), _alloc(alloc) {
-  sentry = node_alloc(_alloc).allocate(1);
-  sentry_alloc(_alloc).construct((Sentry *)sentry, Sentry());
-  link(sentry, sentry);
+  _sentry = node_alloc(_alloc).allocate(1);
+  sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
+  link(_sentry, _sentry);
+  for (size_t i(0); i < n; i++)
+    push_back(val);
+}
+
+template <typename T, class Alloc>
+template <typename I>
+list<T, Alloc>::list(I first, I last, const allocator_type &alloc)
+    : _size(0), _alloc(alloc) {
+  _sentry = node_alloc(_alloc).allocate(1);
+  sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
+  link(_sentry, _sentry);
   assign(first, last);
 }
 
 template <typename T, class Alloc>
-list<T, alloc>::list(const list<T, Alloc> &target)
+list<T, Alloc>::list(const list<T, Alloc> &target)
     : _size(0) {
-  sentry = node_alloc(_alloc).allocate(1);
-  sentry_alloc(_alloc).construct((Sentry *)sentry, Sentry());
-  link(sentry, sentry);
+  _sentry = node_alloc(_alloc).allocate(1);
+  sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
+  link(_sentry, _sentry);
   *this = target;
 }
 
 template <typename T, class Alloc>
-list<T, alloc>::~list() {
+list<T, Alloc>::~list() {
   empty_list();
-  sentry_alloc(_alloc).destroy((Sentry *)sentry);
-  node_alloc(_alloc).deallocate(sentry, 1);
-  sentry = nullptr;
+  sentry_alloc(_alloc).destroy((Sentry *)_sentry);
+  node_alloc(_alloc).deallocate(_sentry, 1);
+  _sentry = NULL;
 }
 
 template <typename T, class Alloc>
@@ -281,35 +295,34 @@ template <typename T, class Alloc>
 void list<T, Alloc>::resize(size_type n, value_type val) {
   if (n < _size)
     for (size_type i(0); i < _size - n; i++)
-      delete_node(sentry->prev);
-  if (n > size)
+      delete_node(_sentry->prev);
+  if (n > _size)
     insert(end(), n - _size, val);
   _size = n;
 }
 
 template <typename T, class Alloc>
-size_t list<T, alloc>::max_size() { return (std::numeric_limits<size_t>::max() / sizeof(Node)); }  // 디스코드 확인
-}  // namespace ft
+size_t list<T, Alloc>::max_size() { return (std::numeric_limits<size_t>::max() / sizeof(Node)); }  // 디스코드 확인
 
 template <typename T, class Alloc>
-bool list<T, Alloc>::empty() const { return (sentry == sentry->next); }
+bool list<T, Alloc>::empty() const { return (_sentry == _sentry->next); }
 
-template <typenamt T, class Alloc>
+template <typename T, class Alloc>
 void list<T, Alloc>::push_back(const T &e) {
-  insert_node(create_node(e), sentry->prev, sentry);
+  insert_node(create_node(e), _sentry->prev, _sentry);
   _size++;
 }
 
 template <typename T, class Alloc>
 void list<T, Alloc>::push_front(const T &e) {
-  insert_node(create_node(e), sentry, sentry->next);
+  insert_node(create_node(e), _sentry, _sentry->next);
   _size++;
 }
 
 template <typename T, class Alloc>
 void list<T, Alloc>::pop_back() {
   if (!empty()) {
-    deletE_node(sentry->prev);
+    delete_node(_sentry->prev);
     _size--;
   }
 }
@@ -317,16 +330,16 @@ void list<T, Alloc>::pop_back() {
 template <typename T, class Alloc>
 void list<T, Alloc>::pop_front() {
   if (!empty()) {
-    delete_node(sentry->next);
+    delete_node(_sentry->next);
     _size--;
   }
 }
 
 /* iterators */
 template <typename T, class Alloc>
-typename list<T, Alloc>::const_iterator list<T, Alloc>::begin() const { return (const_iterator(sentry->next)); }
+typename list<T, Alloc>::const_iterator list<T, Alloc>::begin() const { return (const_iterator(_sentry->next)); }
 template <typename T, class Alloc>
-typename list<T, Alloc>::iterator list<T, Alloc>::begin() { return (iterator(sentry->next)); }
+typename list<T, Alloc>::iterator list<T, Alloc>::begin() { return (iterator(_sentry->next)); }
 
 template <typename T, class Alloc>
 typename list<T, Alloc>::const_reverse_iterator list<T, Alloc>::rbegin() const { return (const_reverse_iterator(end)); }
@@ -334,9 +347,9 @@ template <typename T, class Alloc>
 typename list<T, Alloc>::reverse_iterator list<T, Alloc>::rbegin() { return (reverse_iterator(end())); }
 
 template <typename T, class Alloc>
-typename list<T, alloc>::const_iterator list<T, Alloc>::end const { return (const_iterator(sentry)); }
+typename list<T, Alloc>::const_iterator list<T, Alloc>::end() const { return (const_iterator(_sentry)); }
 template <typename T, class Alloc>
-typename list<T, alloc>::const_iterator list<T, Alloc>::end { return (iterator(sentry)); }
+typename list<T, Alloc>::iterator list<T, Alloc>::end() { return (iterator(_sentry)); }
 
 template <typename T, class Alloc>
 typename list<T, Alloc>::const_reverse_iterator list<T, Alloc>::rend() const { return (const_reverse_iterator(begin())); }
@@ -349,14 +362,14 @@ template <typename T, class Alloc>
 T &list<T, Alloc>::front() {
   if (empty())
     throw std::out_of_range(std::string("Error: out of bounds access"));
-  return (sentry->next->data);
+  return (_sentry->next->element);
 }
 
 template <typename T, class Alloc>
 const T &list<T, Alloc>::front() const {
   if (empty())
     throw std::out_of_range(std::string("Error: out of bounds access"));
-  return (sentry->next->data);
+  return (_sentry->next->element);
 }
 
 /* back */
@@ -364,20 +377,20 @@ template <typename T, class Alloc>
 T &list<T, Alloc>::back() {
   if (empty())
     throw std::out_of_range(std::string("Error: out of bounds access"));
-  return (sentry->prev->data);
+  return (_sentry->prev->element);
 }
 
 template <typename T, class Alloc>
 const T &list<T, Alloc>::back() const {
   if (empty())
     throw std::out_of_range(std::string("Error: out of bounds access"));
-  return (sentry->prev->data);
+  return (_sentry->prev->element);
 }
 
 /* assign */
 template <typename T, class Alloc>
 template <typename I>  // why twice?!?!?!?!
-void list<T, Alloc>::assign(I First, I last) {
+void list<T, Alloc>::assign(I first, I last) {
   empty_list();
   for ((void)first; first != last; first++)
     push_back(*first);
@@ -419,57 +432,56 @@ typename list<T, Alloc>::iterator list<T, Alloc>::erase(iterator position) {
   delete_node(bcast(position).ptr);
   _size--;
   return (next);
-
-  template <typename T, class Alloc>
-  typename list<T, Alloc>::iterator list<T, Alloc>::erase(iterator first, iterator last) {
-    iterator next;
-    iterator it = first;
-    while (it != last) {
-      if (it == end())
-        throw std::invalid_argument("Error: trying to delete past the end element of list");
-      next = fwd(it, 1);
-      delete_node(bcast(it).ptr);
-      it = next;
-      _size--;
-    }
-
-    return (it);
+}
+template <typename T, class Alloc>
+typename list<T, Alloc>::iterator list<T, Alloc>::erase(iterator first, iterator last) {
+  iterator next;
+  iterator it = first;
+  while (it != last) {
+    if (it == end())
+      throw std::invalid_argument("Error: trying to delete past the end element of list");
+    next = fwd(it, 1);
+    delete_node(bcast(it).ptr);
+    it = next;
+    _size--;
   }
 
-  template <typename T, class Alloc>
-  void list<T, Alloc>::swap(list<T, Alloc> & x) {
-    std::swap(_size, x._size);
-    std::swap(sentry, x.sentry);
-  }
+  return (it);
+}
 
-  template <typename T, class Alloc>
-  void list<T, Alloc>::clear { empty_list(); }
+template <typename T, class Alloc>
+void list<T, Alloc>::swap(list<T, Alloc> &x) {
+  std::swap(_size, x._size);
+  std::swap(_sentry, x._sentry);
+}
 
-  template <typename T, class Alloc>
-  void list<T, Alloc>::splice(iterator position, list<T, Alloc> & x) {
-    splice(position, x, x.begin(), x.end());
-  }
+template <typename T, class Alloc>
+void list<T, Alloc>::clear() { empty_list(); }
 
-  template <typename T, class Alloc>
-  void list<T, Alloc>::splice(iterator position, list<T, Alloc> & x, iteartor i) {
-    insert_node(unlink(bacst(i).ptr), bcast(ft::fwd(position, -1)).ptr, bcast(position).ptr);
+template <typename T, class Alloc>
+void list<T, Alloc>::splice(iterator position, list<T, Alloc> &x) {
+  splice(position, x, x.begin(), x.end());
+}
+
+template <typename T, class Alloc>
+void list<T, Alloc>::splice(iterator position, list<T, Alloc> &x, iterator i) {
+  insert_node(unlink(bcast(i).ptr), bcast(ft::fwd(position, -1)).ptr, bcast(position).ptr);
+  _size++;
+  x._size--;
+}
+
+template <typename T, class Alloc>
+void list<T, Alloc>::splice(iterator position, list<T, Alloc> &x, iterator first, iterator last) {
+  Node *pit;
+  typename list<T, Alloc>::iterator next(NULL);
+  typename list<T, Alloc>::iterator it = first;
+  while (it != last) {
+    pit = bcast(it).ptr;
+    next = fwd(it, 1);
+    insert_node(unlink(pit), bcast(fwd(position, -1)).ptr, bcast(position).ptr);
     _size++;
     x._size--;
-  }
-
-  template <typename T, class Alloc>
-  void list<T, Alloc>::splice(iterator position, list<T, Alloc> & x, iterator first, iterator last) {
-    Node *pit;
-    typename list<T, Alloc>::iterator next(nullptr);
-    typename list<T, Alloc>::iteartor it = first;
-    while (it != last) {
-      pit = bcast(it).ptr;
-      next = fwd(it, 1);
-      insert_node(unlik(pit), bcast(fwd(position, -1)).ptr, bcast(position).ptr);
-      _size++;
-      x._size;
-      it = next;
-    }
+    it = next;
   }
 }
 
@@ -492,11 +504,11 @@ template <typename T, class Alloc>
 void list<T, Alloc>::unique() {
   iterator it = ++begin();
   while (it != end())
-    *it == *(fwd(it, -1) ? it = erase(it) : it++;)
+    *it == *(fwd(it, -1)) ? it = erase(it) : it++;
 }
 
 template <typename T, class Alloc>
-template <class BinaryPredcicate>
+template <class BinaryPredicate>
 void list<T, Alloc>::unique(BinaryPredicate binary_pred) {
   iterator it = ++begin();
   while (it != end()) {
@@ -507,17 +519,18 @@ void list<T, Alloc>::unique(BinaryPredicate binary_pred) {
   }
 }
 
-typename<typename T, class Alloc> void list<T, Alloc>::merge(list<T, Alloc> &x) {
+template <typename T, class Alloc>
+void list<T, Alloc>::merge(list<T, Alloc> &x) {
   iterator it = begin();
   iterator it_x = x.begin();
-  iterator next(nullptr);
+  iterator next(NULL);
 
-  while (itx != x.end()) {
-    while (it != end && !(*itx < *it))
+  while (it_x != x.end()) {
+    while (it != end() && !(*it_x < *it))
       it++;
-    next = fwd(itx, 1);
-    splice(it, x, itx);  // what does 'splice' do?
-    itx = next;
+    next = fwd(it_x, 1);
+    splice(it, x, it_x);  // what does 'splice' do?
+    it_x = next;
   }
 }
 
@@ -526,7 +539,7 @@ template <class Compare>
 void list<T, Alloc>::merge(list<T, Alloc> &x, Compare comp) {
   typename list<T, Alloc>::iterator it = begin();
   typename list<T, Alloc>::iterator itx = x.begin();
-  typename list<T, Alloc>::iterator next(nullptr);
+  typename list<T, Alloc>::iterator next(NULL);
 
   while (itx != x.end()) {
     while (it != end() && !comp(*itx, *it))
@@ -538,7 +551,8 @@ void list<T, Alloc>::merge(list<T, Alloc> &x, Compare comp) {
 }
 
 template <typename T, class Alloc>
-void list<T, Alloc>::sort() {
+template <class Compare>
+void list<T, Alloc>::sort(Compare comp) {
   typename list<T, Alloc>::iterator it = ++begin();
   while (it != end()) {
     if (comp(*it, *fwd(it, -1))) {
@@ -552,15 +566,15 @@ void list<T, Alloc>::sort() {
 
 template <typename T, class Alloc>
 void list<T, Alloc>::reverse() {
-  Node *current = sentry;
-  Node *prev = sentry->prev, *next = nullptr;
+  Node *current = _sentry;
+  Node *prev = _sentry->prev, *next = NULL;
   do {
     next = current->next;
     current->next = prev;
     current->prev = next;
     prev = current;
     current = next;
-  } while (current != sentry);
+  } while (current != _sentry);
 }
 
 /*operator overloads */
@@ -569,7 +583,7 @@ template <typename T, class Alloc>
 const T &list<T, Alloc>::operator[](size_type i) const { return *(begin() + i); }
 
 template <typename T, class Alloc>
-T &list<T, Alloc>::operator[](size_type i) const { return *(begin() + i); }
+T &list<T, Alloc>::operator[](size_type i) { return *(begin() + i); }
 
 template <typename T, class Alloc>
 list<T, Alloc> &list<T, Alloc>::operator=(const list<T, Alloc> &target) {
@@ -592,7 +606,7 @@ bool operator==(const list<U, V> &lhs, const list<U, V> &rhs) {
   return true;
 }
 
-template <typename U, V>
+template <typename U, typename V>
 bool operator!=(const list<U, V> &lhs, const list<U, V> &rhs) {
   return (!(lhs == rhs));
 }

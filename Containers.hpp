@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 14:46:12 by lumeyer           #+#    #+#             */
-/*   Updated: 2021/05/03 18:01:24 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/04 19:23:25 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <iostream>
 
 // #include "Vector.hpp"
-#include "list.hpp"
+#include "List.hpp"
 // #include "Stack.hpp"
 // #include "Map.hpp"
 // #include "Queue.hpp"

@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/03 18:03:54 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/04 19:10:27 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ class base_list_iterator {
   DoublyLinkedList<non_const_type> *ptr;
   DoublyLinkedList<non_const_type> *get() { return (ptr); }
 
-  base_list_iterator() : ptr(nullptr) {}
+  base_list_iterator() : ptr(NULL) {}
   base_list_iterator(node_pointer p) : ptr(p) {}
   base_list_iterator(const non_const_iterator &target) : ptr(target.ptr) {}
 
@@ -79,7 +79,7 @@ class base_list_iterator {
 
   reference operator*() {
     if (ptr)
-      return (ptr->data);
+      return (ptr->element);
     throw std::out_of_range(std::string("Error: dereferencing null pointer"));
   }
 

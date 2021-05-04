@@ -6,12 +6,10 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:13:03 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/03 18:02:51 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/04 19:13:06 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-#pragma once
 
 #include <unistd.h>
 
@@ -20,7 +18,6 @@
 #include <cstdlib>  //for ptrdiff_h, idk rest yet
 #include <iostream>
 #include <string>
-#define nullptr NULL
 
 namespace ft {
 template <typename Iterator>
