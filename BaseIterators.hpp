@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   BaseIterators.hpp                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/04 19:10:27 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/04 22:01:39 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ class base_list_iterator {
   base_list_iterator(node_pointer p) : ptr(p) {}
   base_list_iterator(const non_const_iterator &target) : ptr(target.ptr) {}
 
-  virtual ~base_list_iterator();
+  virtual ~base_list_iterator() {}
 
-      base_list_iterator &
-      operator=(const non_const_iterator &target) {
+  base_list_iterator &
+  operator=(const non_const_iterator &target) {
     ptr = target.ptr;
     return (*this);
   }
@@ -236,6 +236,75 @@ class base_reverse_iterator {
                          const base_reverse_iterator<B> &b) {
     return a.itbase < b.itbase;
   }
+};
+
+template <typename T, bool is_const>
+class base_vector_iterator {
+ public:
+  typedef T value_type;
+  typedef typename choose<is_const, const T &, T &>::type reference;
+  typedef typename choose<is_const, const T *, T *>::type pointer;
+  typedef std::ptrdiff_t difference_type;
+  typedef std::random_access_iterator_tag iterator_category;
+  typedef typename remove_const<T>::type non_const_type;
+  typedef typename add_const<T>::type const_type;
+  typedef base_vector_iterator<non_const_type, false> non_const_iterator;
+  typedef base_vector_iterator<const_type, false> const_iterator;
+
+  T *ptr;
+  T &get() { return (ptr); }
+
+  base_vector_iterator : ptr(NULL) {}
+  base_vector_iterator(pointer p) : ptr(p) {}
+  base_vector_iterator(const non_const_iterator &target) : ptr(target.ptr) {}
+  virtual ~base_vector_iterator() {}
+
+  inline base_vector_iterator &operator=(const non_const_iterator &target) {
+    this->ptr = target.ptr;
+    return (*this);
+  }
+
+  inline base_vector_iterator &operator++() {
+    ptr++;
+    return (*this);
+  }
+
+  inline base_vector_iterator operator++(int) {
+    base_vector_iterator tmp(ptr);
+    operator++();
+    return (tmp);
+  }
+
+  inline base_vector_iterator &operator--() {
+    ptr--;
+    return (*this);
+  }
+
+  inline base_vector_iterator operator--(int) {
+    base_vector_iterator tmp(ptr);
+    operator--();
+    return (tmp);
+  }
+
+  inline reference operator*() {
+    return (*ptr);
+  }
+
+  inline reference operator[](difference_type n) {
+    return (ptr[n]);
+  }
+
+  inline base_vector_iterator operator+(difference_type n) {
+    return base_vector_iterator(ptr + n);
+  }
+
+  inline base_vector_iterator &operator+=(difference_type n)
+  {
+    ptr += n;
+    return (*this);
+  }
+
+
 };
 
 };  // namespace ft

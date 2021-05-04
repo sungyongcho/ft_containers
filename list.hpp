@@ -6,13 +6,13 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:32:01 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/04 19:23:28 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/04 19:45:24 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-#include "BaseIterator.hpp"
+#include "BaseIterators.hpp"
 
 namespace ft {
 template <typename T, class Alloc>
@@ -547,6 +547,19 @@ void list<T, Alloc>::merge(list<T, Alloc> &x, Compare comp) {
     next = fwd(itx, 1);
     splice(it, x, itx);
     itx = next;
+  }
+}
+
+template <typename T, class Alloc>
+void list<T, Alloc>::sort() {
+  typename list<T, Alloc>::iterator it = ++begin();
+  while (it != end()) {
+    if (*it < *fwd(it, -1)) {
+      swap_nodes(bcast(it).ptr->prev, bcast(it).ptr);
+      if (it == begin())
+        it++;
+    } else
+      it++;
   }
 }
 
