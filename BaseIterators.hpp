@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/05 15:27:42 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/05 16:26:47 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,7 @@ class base_reverse_iterator {
   }
 
   template <typename A>
-  long long operator-(const base_reverse_iterator<A> &other) {
+  long operator-(const base_reverse_iterator<A> &other) {
     return -(itbase - other.itbase);
   }
 
@@ -238,124 +238,124 @@ class base_reverse_iterator {
   }
 };
 
-// template <typename T, bool is_const>
-// class base_vector_iterator {
-//  public:
-//   typedef T value_type;
-//   typedef typename choose<is_const, const T &, T &>::type reference;
-//   typedef typename choose<is_const, const T *, T *>::type pointer;
-//   typedef std::ptrdiff_t difference_type;
-//   typedef std::random_access_iterator_tag iterator_category;
-//   typedef typename remove_const<T>::type non_const_type;
-//   typedef typename add_const<T>::type const_type;
-//   typedef base_vector_iterator<non_const_type, false> non_const_iterator;
-//   typedef base_vector_iterator<const_type, false> const_iterator;
+template <typename T, bool is_const>
+class base_vector_iterator {
+ public:
+  typedef T value_type;
+  typedef typename choose<is_const, const T &, T &>::type reference;
+  typedef typename choose<is_const, const T *, T *>::type pointer;
+  typedef std::ptrdiff_t difference_type;
+  typedef std::random_access_iterator_tag iterator_category;
+  typedef typename remove_const<T>::type non_const_type;
+  typedef typename add_const<T>::type const_type;
+  typedef base_vector_iterator<non_const_type, false> non_const_iterator;
+  typedef base_vector_iterator<const_type, false> const_iterator;
 
-//   T *ptr;
-//   T &get() { return (ptr); }
+  T *ptr;
+  T &get() { return (ptr); }
 
-//   base_vector_iterator : ptr(NULL) {}
-//   base_vector_iterator(pointer p) : ptr(p) {}
-//   base_vector_iterator(const non_const_iterator &target) : ptr(target.ptr) {}
-//   virtual ~base_vector_iterator() {}
+  base_vector_iterator : ptr(NULL) {}
+  base_vector_iterator(pointer p) : ptr(p) {}
+  base_vector_iterator(const non_const_iterator &target) : ptr(target.ptr) {}
+  virtual ~base_vector_iterator() {}
 
-//   inline base_vector_iterator &operator=(const non_const_iterator &target) {
-//     this->ptr = target.ptr;
-//     return (*this);
-//   }
+  inline base_vector_iterator &operator=(const non_const_iterator &target) {
+    this->ptr = target.ptr;
+    return (*this);
+  }
 
-//   inline base_vector_iterator &operator++() {
-//     ptr++;
-//     return (*this);
-//   }
+  inline base_vector_iterator &operator++() {
+    ptr++;
+    return (*this);
+  }
 
-//   inline base_vector_iterator operator++(int) {
-//     base_vector_iterator tmp(ptr);
-//     operator++();
-//     return (tmp);
-//   }
+  inline base_vector_iterator operator++(int) {
+    base_vector_iterator tmp(ptr);
+    operator++();
+    return (tmp);
+  }
 
-//   inline base_vector_iterator &operator--() {
-//     ptr--;
-//     return (*this);
-//   }
+  inline base_vector_iterator &operator--() {
+    ptr--;
+    return (*this);
+  }
 
-//   inline base_vector_iterator operator--(int) {
-//     base_vector_iterator tmp(ptr);
-//     operator--();
-//     return (tmp);
-//   }
+  inline base_vector_iterator operator--(int) {
+    base_vector_iterator tmp(ptr);
+    operator--();
+    return (tmp);
+  }
 
-//   inline reference operator*() {
-//     return (*ptr);
-//   }
+  inline reference operator*() {
+    return (*ptr);
+  }
 
-//   inline reference operator[](difference_type n) {
-//     return (ptr[n]);
-//   }
+  inline reference operator[](difference_type n) {
+    return (ptr[n]);
+  }
 
-//   inline base_vector_iterator operator+(difference_type n) {
-//     return base_vector_iterator(ptr + n);
-//   }
+  inline base_vector_iterator operator+(difference_type n) {
+    return base_vector_iterator(ptr + n);
+  }
 
-//   inline base_vector_iterator &operator+=(difference_type n) {
-//     ptr += n;
-//     return (*this);
-//   }
+  inline base_vector_iterator &operator+=(difference_type n) {
+    ptr += n;
+    return (*this);
+  }
 
-//   inline base_vector_iterator operator-(difference_type n) {
-//     return base_vector_iterator(ptr - n);
-//   }
+  inline base_vector_iterator operator-(difference_type n) {
+    return base_vector_iterator(ptr - n);
+  }
 
-//   inline long operator-(const non_const_iterator &other) {
-//     return ((long)ptr - (long)other.ptr / (long)sizeof(value_type));
-//   }
+  inline long operator-(const non_const_iterator &other) {
+    return ((long)ptr - (long)other.ptr / (long)sizeof(value_type));
+  }
 
-//   inline long operator-(const const_iterator &other) {
-//     return ((long)ptr - (long)other.ptr / (long)sizeof(value_type));
-//   }
+  inline long operator-(const const_iterator &other) {
+    return ((long)ptr - (long)other.ptr / (long)sizeof(value_type));
+  }
 
-//   inline base_vector_iterator &operator-=(difference_type n) {
-//     ptr -= n;
-//     return (*this);
-//   }
+  inline base_vector_iterator &operator-=(difference_type n) {
+    ptr -= n;
+    return (*this);
+  }
 
-//   template <typename T_a, typename T_b, bool A, bool B>
-//   friend inline bool operator==(base_vector_iterator<T_a, A> a,
-//                                 base_vector_iterator<T_b, b> b) {
-//     return (a.ptr == b.ptr);
-//   }
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator==(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr == b.ptr);
+  }
 
-//   template <typename T_a, typename T_b, bool A, bool B>
-//   friend inline bool operator!=(base_vector_iterator<T_a, A> a,
-//                                 base_vector_iterator<T_b, b> b) {
-//     return (a.ptr != b.ptr);
-//   }
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator!=(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr != b.ptr);
+  }
 
-//   template <typename T_a, typename T_b, bool A, bool B>
-//   friend inline bool operator<(base_vector_iterator<T_a, A> a,
-//                                 base_vector_iterator<T_b, b> b) {
-//     return (a.ptr < b.ptr);
-//   }
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator<(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr < b.ptr);
+  }
 
-//   template <typename T_a, typename T_b, bool A, bool B>
-//   friend inline bool operator<=(base_vector_iterator<T_a, A> a,
-//                                 base_vector_iterator<T_b, b> b) {
-//     return (a.ptr <= b.ptr);
-//   }
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator<=(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr <= b.ptr);
+  }
 
-//   template <typename T_a, typename T_b, bool A, bool B>
-//   friend inline bool operator>(base_vector_iterator<T_a, A> a,
-//                                 base_vector_iterator<T_b, b> b) {
-//     return (a.ptr > b.ptr);
-//   }
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator>(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr > b.ptr);
+  }
 
-//   template <typename T_a, typename T_b, bool A, bool B>
-//   friend inline bool operator>=(base_vector_iterator<T_a, A> a,
-//                                 base_vector_iterator<T_b, b> b) {
-//     return (a.ptr != b.ptr);
-//   }
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend inline bool operator>=(base_vector_iterator<T_a, A> a,
+                                base_vector_iterator<T_b, b> b) {
+    return (a.ptr != b.ptr);
+  }
 
-// };
+};
 
-};  // namespace ft
+}  // namespace ft

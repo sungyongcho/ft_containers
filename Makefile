@@ -1,7 +1,7 @@
 CC			=	clang++
 
 FWARN		=	-Wall -Wextra -Werror
-FSTD		=	-std=c++98
+FSTD		=	-std=c++98 -pedantic
 FDEBUG		=	-g
 FOPTI		=	-O3 -Ofast
 FLAGS		=	$(FWARN) $(FDEBUG) $(FOPTI)

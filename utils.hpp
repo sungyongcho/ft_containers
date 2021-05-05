@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:13:03 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/04 19:13:06 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/05 15:47:10 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@
 
 namespace ft {
 template <typename Iterator>
-long long distance(Iterator first, Iterator last) {
+long distance(Iterator first, Iterator last) {
   Iterator it_a(first);
   Iterator it_b(first);
-  long long count = 0;
+  long count = 0;
   while (true) {
     if (it_a == last)
       return count;
@@ -119,20 +119,20 @@ ssize_t circular_increment(const ssize_t &value, const ssize_t &max) {
     throw std::exception();
 }
 
-long long circular_clamp(const long long &value, const long long &low, const long long &high) {
+long circular_clamp(const long &value, const long &low, const long &high) {
   if (value >= low && value < high)
     return value;
-  long long dist_min = std::abs(low - value);
-  long long dist_max = std::abs(high - value);
+  long dist_min = std::abs(low - value);
+  long dist_max = std::abs(high - value);
   if (dist_min < dist_max)
     return dist_min % (high - low) == 0 ? low : high - (dist_min % (high - low));
   else
     return low + (dist_max % (high - low));
 }
 
-long long substract_size_t(const size_t &a, const size_t &b) {
-  long long la = a;
-  long long lb = b;
+long substract_size_t(const size_t &a, const size_t &b) {
+  long la = a;
+  long lb = b;
   return (la - lb);
 }
 
