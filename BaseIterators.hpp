@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/06 21:51:01 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/06 22:06:18 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -381,7 +381,121 @@ class base_avl_iterator {
   typedef typename choose<is_const, const T*, T*>::type pointer;
   typedef std::ptrdiff_t                                difference_type;
   typedef std::bidirectional_iterator_tag               iterator_category;
+
+  map_node<non_const_type>        *ptr;
+  map_node<non_const_type> *const *tree_ref;
   // clang-format on
+
+  base_avl_iterator() : ptr(NULL), tree_ref(NULL) {}
+  base_avl_iterator(map_node<non_const_type> *p, map_node<non_const_type> *const *tree_ref)
+      : ptr(p), tree_ref(tree_ref) {}
+  base_avl_iterator(const non_const_iterator &target)
+      : ptr(target.ptr), tree_ref(target.tree_ref) {}
+  virtual ~base_avl_iterator()
+
+      base_avl_iterator &
+      operator=(const non_const_iterator &target) {
+    ptr = target.ptr;
+    tree_ref = target.tree_ref;
+    return (*this);
+  }
+
+  map_node<non_const_type> *get() { return (ptr); }
+
+  base_avl_iterator get_next(map_node<non_const_type> *root) {
+    if (root->right) {
+      root = root->right;
+      while (root->left)
+        root = root->left;
+    } else {
+      map_node<non_const_type> *old;
+      do {
+        old = root;
+        root = root->parent;
+        if (!root)
+          return base_avl_iterator(NULL, tree_ref);
+      } while (root->right == old);
+    }
+    return base_avl_iterator(root, tree_ref);
+  }
+
+  base_avl_iterator get_prev(map_node<non_const_type> *root) {
+    if (root->left) {
+      root = root->left;
+      while (root->right)
+        root = root->right;
+    } else {
+      map_node<non_const_type> *old;
+      do {
+        old = root;
+        root = root->parent;
+        if (!root)
+          return base_avl_iterator(NULL, tree_ref);
+      }
+    }
+    return base_avl_iterator(root, tree_ref);
+  }
+
+  bool operator==(map_node<non_const_type> *b) { return (ptr == b); }
+  bool operator!=(map_node<non_const_type> *b) { return (ptr != b); }
+
+  pointer operator->() {
+    if (ptr)
+      return (&ptr->pair);
+    throw std::out_of_range(std::string("Error: dereferencing null pointer"));
+  }
+
+  pointer operator*() {
+    if (ptr)
+      return (ptr->pair);
+    throw std::out_of_range(std::string("Error: dereferencing null pointer"));
+  }
+
+  base_avl_iterator &operator++() {
+    if (!ptr) {
+      ptr = *tree_ref;
+      while (ptr && ptr->left)
+        ptr = ptr->left;
+    } else
+      *this = get_next(ptr);
+    return (*this);
+  }
+
+  base_avl_iterator operator++(int) {
+    base_avl_iterator tmp(ptr, tree_ref);
+    operator++();
+    return (tmp);
+  }
+
+  base_avl_iterator &operator--() {
+    if (!ptr) {
+      ptr = *tree_ref;
+      while (ptr && ptr->right)
+        ptr = ptr->right;
+    } else
+      *this = get_prev(ptr);
+    return (*this);
+  }
+
+  base_avl_iterator operator--(int) {
+    base_avl_iterator tmp(ptr, tree_ref);
+    operator--();
+    return (tmp);
+  }
+
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend bool operator==(const base_avl_iterator<T_a, A> &a,
+                         const base_avl_iterator<T_b, B> &b) {
+    return (a.ptr == b.ptr);
+  }
+
+  template <typename T_a, typename T_b, bool A, bool B>
+  friend bool operator!=(const base_avl_iterator<T_a, A> &a,
+                         const base_avl_iterator<T_b, B> &b>{
+    return (a.ptr != b.ptr);
+  }
+
+
 };
 
 }  // namespace ft
