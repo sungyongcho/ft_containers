@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 14:46:12 by lumeyer           #+#    #+#             */
-/*   Updated: 2021/05/05 16:27:38 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/06 16:00:34 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include <iostream>
 
-// #include "Vector.hpp"
+#include "vector.hpp"
 #include "list.hpp"
 // #include "Stack.hpp"
 // #include "Map.hpp"
@@ -32,20 +32,20 @@
 #include <set>
 #include <deque>
 
-// template <class T, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, std::vector<T, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename std::vector<T, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << *it << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
+template <class T, class Alloc>
+std::ostream&	operator<<(std::ostream& stream, std::vector<T, Alloc>& target)
+{
+	std::cout << "{ ";
+	size_t i = 0;
+	for (typename std::vector<T, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
+	{
+		std::cout << "(" << *it << ")";
+		if (i != target.size() - 1)
+			std::cout << ", ";
+	}
+	std::cout << " }" << std::endl;
+	return (stream);
+}
 
 template <typename T>
 std::ostream &operator<<(std::ostream &stream, const std::list<T> &e)
@@ -136,20 +136,20 @@ std::ostream &operator<<(std::ostream &stream, const std::list<T> &e)
 // 	return (stream);
 // }
 
-// template <class T, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, ft::vector<T, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename ft::vector<T, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << *it << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
+template <class T, class Alloc>
+std::ostream&	operator<<(std::ostream& stream, ft::vector<T, Alloc>& target)
+{
+	std::cout << "{ ";
+	size_t i = 0;
+	for (typename ft::vector<T, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
+	{
+		std::cout << "(" << *it << ")";
+		if (i != target.size() - 1)
+			std::cout << ", ";
+	}
+	std::cout << " }" << std::endl;
+	return (stream);
+}
 
 // template <class Key, class T, class Cmp, class Alloc>
 // std::ostream&	operator<<(std::ostream& stream, ft::map<Key, T, Cmp, Alloc>& target)

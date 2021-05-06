@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/06 15:32:23 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/06 16:11:10 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ struct DoublyLinkedList {
   T element;
   DoublyLinkedList(T val) : element(val) {}
 };
- a
 
 template <typename T>
 struct list_sentry {
@@ -255,7 +254,7 @@ class base_vector_iterator {
   T *ptr;
   T &get() { return (ptr); }
 
-  base_vector_iterator : ptr(NULL) {}
+  base_vector_iterator() : ptr(NULL) {}
   base_vector_iterator(pointer p) : ptr(p) {}
   base_vector_iterator(const non_const_iterator &target) : ptr(target.ptr) {}
   virtual ~base_vector_iterator() {}
@@ -309,7 +308,7 @@ class base_vector_iterator {
   }
 
   inline long operator-(const non_const_iterator &other) {
-    return ((long)ptr - (long)other.ptr / (long)sizeof(value_type));
+    return (((long)ptr - (long)other.ptr) / (long)sizeof(value_type));
   }
 
   inline long operator-(const const_iterator &other) {
@@ -323,40 +322,39 @@ class base_vector_iterator {
 
   template <typename T_a, typename T_b, bool A, bool B>
   friend inline bool operator==(base_vector_iterator<T_a, A> a,
-                                base_vector_iterator<T_b, b> b) {
+                                base_vector_iterator<T_b, B> b) {
     return (a.ptr == b.ptr);
   }
 
   template <typename T_a, typename T_b, bool A, bool B>
   friend inline bool operator!=(base_vector_iterator<T_a, A> a,
-                                base_vector_iterator<T_b, b> b) {
+                                base_vector_iterator<T_b, B> b) {
     return (a.ptr != b.ptr);
   }
 
   template <typename T_a, typename T_b, bool A, bool B>
   friend inline bool operator<(base_vector_iterator<T_a, A> a,
-                                base_vector_iterator<T_b, b> b) {
+                               base_vector_iterator<T_b, B> b) {
     return (a.ptr < b.ptr);
   }
 
   template <typename T_a, typename T_b, bool A, bool B>
   friend inline bool operator<=(base_vector_iterator<T_a, A> a,
-                                base_vector_iterator<T_b, b> b) {
+                                base_vector_iterator<T_b, B> b) {
     return (a.ptr <= b.ptr);
   }
 
   template <typename T_a, typename T_b, bool A, bool B>
   friend inline bool operator>(base_vector_iterator<T_a, A> a,
-                                base_vector_iterator<T_b, b> b) {
+                               base_vector_iterator<T_b, B> b) {
     return (a.ptr > b.ptr);
   }
 
   template <typename T_a, typename T_b, bool A, bool B>
   friend inline bool operator>=(base_vector_iterator<T_a, A> a,
-                                base_vector_iterator<T_b, b> b) {
+                                base_vector_iterator<T_b, B> b) {
     return (a.ptr != b.ptr);
   }
-
 };
 
 }  // namespace ft
