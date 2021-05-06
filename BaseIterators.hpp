@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/05 16:28:36 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/06 15:32:23 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ struct DoublyLinkedList {
   T element;
   DoublyLinkedList(T val) : element(val) {}
 };
+ a
 
 template <typename T>
 struct list_sentry {
