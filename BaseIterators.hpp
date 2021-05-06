@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/06 16:11:10 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/06 21:51:01 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -355,6 +355,33 @@ class base_vector_iterator {
                                 base_vector_iterator<T_b, B> b) {
     return (a.ptr != b.ptr);
   }
+};
+
+template <typename T>
+struct map_node {
+  T pair;
+  map_node *left;
+  map_node *right;
+  map_node *parent;
+  ssize_t height;
+  map_node(T val)
+      : pair(val), left(NULL), right(NULL), parent(NULL), height(-1) {}
+  ~map_node() {}
+};
+
+template <typename T, bool is_const>
+class base_avl_iterator {
+ public:
+  // clang-format off
+  typedef typename remove_const<T>::type                                    non_const_type;
+  typedef base_avl_iterator<non_const_type, false>                          non_const_iterator;
+  typedef typename choose<is_const, const map_node<T>*, map_node<T>*>::type node_pointer;
+
+  typedef typename choose<is_const, const T&, t&>::type reference;
+  typedef typename choose<is_const, const T*, T*>::type pointer;
+  typedef std::ptrdiff_t                                difference_type;
+  typedef std::bidirectional_iterator_tag               iterator_category;
+  // clang-format on
 };
 
 }  // namespace ft
