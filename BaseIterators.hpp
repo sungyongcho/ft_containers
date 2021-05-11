@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/07 16:45:16 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/11 22:58:10 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -377,7 +377,7 @@ class base_avl_iterator {
   typedef base_avl_iterator<non_const_type, false>                          non_const_iterator;
   typedef typename choose<is_const, const map_node<T>*, map_node<T>*>::type node_pointer;
 
-  typedef typename choose<is_const, const T&, t&>::type reference;
+  typedef typename choose<is_const, const T&, T&>::type reference;
   typedef typename choose<is_const, const T*, T*>::type pointer;
   typedef std::ptrdiff_t                                difference_type;
   typedef std::bidirectional_iterator_tag               iterator_category;
@@ -391,10 +391,10 @@ class base_avl_iterator {
       : ptr(p), tree_ref(tree_ref) {}
   base_avl_iterator(const non_const_iterator &target)
       : ptr(target.ptr), tree_ref(target.tree_ref) {}
-  virtual ~base_avl_iterator()
+  virtual ~base_avl_iterator() {}
 
-      base_avl_iterator &
-      operator=(const non_const_iterator &target) {
+  base_avl_iterator &
+  operator=(const non_const_iterator &target) {
     ptr = target.ptr;
     tree_ref = target.tree_ref;
     return (*this);
@@ -431,7 +431,7 @@ class base_avl_iterator {
         root = root->parent;
         if (!root)
           return base_avl_iterator(NULL, tree_ref);
-      }
+      } while (root->left == old);
     }
     return base_avl_iterator(root, tree_ref);
   }
@@ -491,11 +491,9 @@ class base_avl_iterator {
 
   template <typename T_a, typename T_b, bool A, bool B>
   friend bool operator!=(const base_avl_iterator<T_a, A> &a,
-                         const base_avl_iterator<T_b, B> &b>{
+                         const base_avl_iterator<T_b, B> &b ) {
     return (a.ptr != b.ptr);
   }
-
-
 };
 
 }  // namespace ft
