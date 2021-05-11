@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 22:06:40 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/11 22:55:37 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/11 22:59:57 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ class map {
   // clang-format on
   explicit map(const key_compare &comp = key_compare());
   template <typename I>
-  map(I first, I last, const key_comapre &comp = key_compare());
+  map(I first, I last, const key_compare &comp = key_compare());
   map(const map &other);
   ~map();
 
