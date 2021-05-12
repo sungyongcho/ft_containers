@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 22:06:40 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/11 23:01:19 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/12 15:45:23 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -224,6 +224,91 @@ template <class Key, class T, class Cmp, class Alloc>
 map<Key, T, Cmp, Alloc>::map(const map &other)
     : tree(NULL), m_size(0), m_comp(other.m_comp), m_alloc(other.m_alloc) {
   *this = other;
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+map<Key, T, Cmp, Alloc> &
+map<Key, T, Cmp, Alloc>::operator=(const map<Key, T, Cmp, Alloc> &target) {
+  free_tree(tree);
+  m_size = 0;
+  m_comp = target.m_comp;
+  for (map<Key, T, Cmp, Alloc>::const_iterator it = target.begin(); it != taret.end(); ++it)
+    insert_node(tree, it->first, it->second, false);
+  return (*this);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+map<Key, T, Cmp, Alloc>::~map() { free_tree(tree); }
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::const_iterator
+map<Key, T, Cmp, Alloc>::begin() const {
+  Node *it = tree;
+  while (it && it->left)
+    it = it->left;
+  return (const_iterator(it, &tree));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::iterator
+map<Key, T, Cmp, Alloc>::begin() {
+  Node *it = tree;
+  while (it && it->left)
+    it = it->left;
+  return (iterator(it, &tree));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::const_iterator
+map<Key, T, Cmp, Alloc>::end() const {
+  return (const_iterator(NULL, &tree));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::iterator
+map<Key, T, Cmp, Alloc>::end() {
+  return (iterator(NULL, &tree));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::const_reverse_iterator
+map<Key, T, Cmp, Alloc>::rbegin() const {
+  return const_reverse_iterator(end());
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::reverse_iterator
+map<Key, T, Cmp, Alloc>::rbegin() {
+  return reverse_iterator(end());
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::const_reverse_iterator
+map<Key, T, Cmp, Alloc>::rend() const {
+  return reverse_iterator(end());
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+std::pair<typename map<Key, T, Cmp, Alloc>::iterator, bool>
+map<Key, T, Cmp, Alloc>::insert(const typename map<Key, T, Cmp, Alloc>::value_type &val) {
+  return insert_node(tree, val.first, val.second, false);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::iterator
+map<Key, T, Cmp, Alloc>::insert(typename map<Key, T, Cmp, Alloc>::iterator position,
+                                const typename map<Key, T, Cmp, Alloc>::value_type &val) {
+  Node *pos_ptr = bcast(position).ptr;
+  iterator nextpos(ft::fwd(position, 1));
+  bool current_next_is_end = (nextpos = end());
+  /*
+  //gotta check
+  // 3 cases:
+  // -> position is a valid hint and would directly precede val: insert from position node down to optimize
+  // -> val key = successor's key, just return the successor
+  // -> otherwise insert and return the iterator
+  */
+
 }
 
 }  // namespace ft
