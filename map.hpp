@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 22:06:40 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/12 15:45:23 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/12 17:39:20 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,15 +300,78 @@ map<Key, T, Cmp, Alloc>::insert(typename map<Key, T, Cmp, Alloc>::iterator posit
                                 const typename map<Key, T, Cmp, Alloc>::value_type &val) {
   Node *pos_ptr = bcast(position).ptr;
   iterator nextpos(ft::fwd(position, 1));
-  bool current_next_is_end = (nextpos = end());
+  bool current_next_is_end = (nextpos == end());
   /*
-  //gotta check
+  // gotta check
   // 3 cases:
   // -> position is a valid hint and would directly precede val: insert from position node down to optimize
   // -> val key = successor's key, just return the successor
   // -> otherwise insert and return the iterator
+  //
   */
+  if (pos_ptr && m_comp(position->first, val.first)) &&
+    (current_next_is_end || m_comp(val.first, nextpos->first)))
+    return (insert_node(post_ptr, val.first, val.second, false).first);
+  else if (!current_next_is_end && key_equal(val.frist, nextpos->first))
+    return (nextpos);
+  else
+    return (insert(val).first);
+}
 
+template <class Key, class T, class Cmp, class Alloc>
+template <class I>
+void map<Key, T, Cmp, Alloc>::insert(I first, I last) {
+  for (I it = first; it != last; ++it)
+    insert_node(tree, it->first, it->second, false);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::erase(iterator position) {
+  delete_node(position->first);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::size_type map<Key, T, Cmp, Alloc>::erase(const key_type &k) {
+  return delete_node(k);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::erase(iterator first, iterator last) {
+  iterator it = first;
+  while (it != last) {
+    iterator successor = ft::fwd(it, 1);
+    erase(it);
+    it = successor;
+  }
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+bool map<Key, T, Cmp, Alloc>::empty() const {
+  return (!m_size);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::size_type
+map<Key, T, Cmp, Alloc>::size() const {
+  return (m_size);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::size_type
+map<Key, T, Cmp, Alloc>::max_size() const {
+  return (std::numeric_limits<size_type>::max() / sizeof(Node));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::swap(map<Key, T, Cmp, Alloc> &x) {
+  std::swap(tree, x.tree);
+  std::swap(m_size, x.m_size);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::clear() {
+  free_tree(tree);
+  m_size = 0;
 }
 
 }  // namespace ft
