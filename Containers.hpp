@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 14:46:12 by lumeyer           #+#    #+#             */
-/*   Updated: 2021/05/06 16:00:34 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/13 18:45:56 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include "vector.hpp"
 #include "list.hpp"
 // #include "Stack.hpp"
-// #include "Map.hpp"
+#include "map.hpp"
 // #include "Queue.hpp"
 // #include "Set.hpp"
 // #include "Multiset.hpp"
@@ -61,20 +61,20 @@ std::ostream &operator<<(std::ostream &stream, const std::list<T> &e)
 	return (stream);
 }
 
-// template <class Key, class T, class Cmp, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, std::map<Key, T, Cmp, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename std::map<Key, T, Cmp, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << it->first << ", " << it->second << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
+template <class Key, class T, class Cmp, class Alloc>
+std::ostream&	operator<<(std::ostream& stream, std::map<Key, T, Cmp, Alloc>& target)
+{
+	std::cout << "{ ";
+	size_t i = 0;
+	for (typename std::map<Key, T, Cmp, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
+	{
+		std::cout << "(" << it->first << ", " << it->second << ")";
+		if (i != target.size() - 1)
+			std::cout << ", ";
+	}
+	std::cout << " }" << std::endl;
+	return (stream);
+}
 
 // template <class Key, class T, class Cmp, class Alloc>
 // std::ostream&	operator<<(std::ostream& stream, std::multimap<Key, T, Cmp, Alloc>& target)
@@ -151,20 +151,20 @@ std::ostream&	operator<<(std::ostream& stream, ft::vector<T, Alloc>& target)
 	return (stream);
 }
 
-// template <class Key, class T, class Cmp, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, ft::map<Key, T, Cmp, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename ft::map<Key, T, Cmp, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << it->first << ", " << it->second << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
+template <class Key, class T, class Cmp, class Alloc>
+std::ostream&	operator<<(std::ostream& stream, ft::map<Key, T, Cmp, Alloc>& target)
+{
+	std::cout << "{ ";
+	size_t i = 0;
+	for (typename ft::map<Key, T, Cmp, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
+	{
+		std::cout << "(" << it->first << ", " << it->second << ")";
+		if (i != target.size() - 1)
+			std::cout << ", ";
+	}
+	std::cout << " }" << std::endl;
+	return (stream);
+}
 
 // template <class Key, class T, class Cmp, class Alloc>
 // std::ostream&	operator<<(std::ostream& stream, ft::multimap<Key, T, Cmp, Alloc>& target)

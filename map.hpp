@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 22:06:40 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/12 17:39:20 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/13 18:54:58 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ class map {
    typedef Alloc                                   allocator_type;
    typedef std::pair<const key_type, mapped_type>  value_type;
    typedef value_type&                             reference;
-   typedef const value_type&*                      const_reference;
+   typedef const value_type&                      const_reference;
    typedef value_type*                             pointer;
    typedef const value_type*                       const_pointer;
    typedef size_t                                  size_type;
@@ -44,7 +44,7 @@ class map {
     // clang-format on
 
     value_compare(const value_compare &o) : comp(o.comp) {}
-    value_comapre(const key_compare &c) : comp(c) {}
+    value_compare(const key_compare &c) : comp(c) {}
     value_compare &operator=(const value_compare &other) {
       comp = other.comp;
       return (*this);
@@ -232,7 +232,7 @@ map<Key, T, Cmp, Alloc>::operator=(const map<Key, T, Cmp, Alloc> &target) {
   free_tree(tree);
   m_size = 0;
   m_comp = target.m_comp;
-  for (map<Key, T, Cmp, Alloc>::const_iterator it = target.begin(); it != taret.end(); ++it)
+  for (map<Key, T, Cmp, Alloc>::const_iterator it = target.begin(); it != target.end(); ++it)
     insert_node(tree, it->first, it->second, false);
   return (*this);
 }
@@ -309,13 +309,12 @@ map<Key, T, Cmp, Alloc>::insert(typename map<Key, T, Cmp, Alloc>::iterator posit
   // -> otherwise insert and return the iterator
   //
   */
-  if (pos_ptr && m_comp(position->first, val.first)) &&
-    (current_next_is_end || m_comp(val.first, nextpos->first)))
-    return (insert_node(post_ptr, val.first, val.second, false).first);
-  else if (!current_next_is_end && key_equal(val.frist, nextpos->first))
-    return (nextpos);
+  if (pos_ptr && m_comp(position->first, val.first) && (current_next_is_end || m_comp(val.first, nextpos->first)))
+    return insert_node(pos_ptr, val.first, val.second, false).first;
+  else if (!current_next_is_end && key_equal(val.first, nextpos->first))
+    return nextpos;
   else
-    return (insert(val).first);
+    return insert(val).first;
 }
 
 template <class Key, class T, class Cmp, class Alloc>
@@ -373,5 +372,367 @@ void map<Key, T, Cmp, Alloc>::clear() {
   free_tree(tree);
   m_size = 0;
 }
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::key_compare
+map<Key, T, Cmp, Alloc>::key_comp() const {
+  return (m_comp);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::value_compare
+map<Key, T, Cmp, Alloc>::value_comp() const {
+  return (value_compare(m_comp));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::iterator
+map<Key, T, Cmp, Alloc>::find(const key_type &k) {
+  Node *node = find_node(tree, k);
+
+  if (node)
+    return (iterator(node, &tree));
+  else
+    return end();
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::const_iterator
+map<Key, T, Cmp, Alloc>::find(const key_type &k) const {
+  Node *node = find_node(tree, k);
+
+  if (node)
+    return (const_iterator(node, &tree));
+  else
+    return (end());
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::size_type
+map<Key, T, Cmp, Alloc>::count(const key_type &k) const {
+  Node *node = find_node(tree, k);
+  return (node ? 1 : 0);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::iterator
+map<Key, T, Cmp, Alloc>::lower_bound(const key_type &k) {
+  iterator i_begin = this->begin();
+  iterator i_end = this->end();
+  for (iterator it = i_begin; it != i_end; ++it)
+    if (!m_comp(it->first, k))
+      return (it);
+  return (i_end);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::const_iterator
+map<Key, T, Cmp, Alloc>::upper_bound(const key_type &k) const {
+  const_iterator i_begin = this->begin();
+  const_iterator i_end = this->end();
+  for (const_iterator it = i_begin; it != i_end; ++it)
+    if (m_comp(k, it->first))
+      return (it);
+  return (i_end);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+std::pair<typename map<Key, T, Cmp, Alloc>::const_iterator, typename map<Key, T, Cmp, Alloc>::const_iterator>
+map<Key, T, Cmp, Alloc>::equal_range(const key_type &k) const {
+  return std::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+std::pair<typename map<Key, T, Cmp, Alloc>::iterator, typename map<Key, T, Cmp, Alloc>::iterator>
+map<Key, T, Cmp, Alloc>::equal_range(const key_type &k) {
+  return std::pair<iterator, iterator>(lower_bound(k), upper_bound(k));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::mapped_type &
+map<Key, T, Cmp, Alloc>::operator[](const key_type &k) {
+  Node *find = find_node(tree, k);
+  if (!find)
+    return (insert_node(tree, k, mapped_type(), true).first->second);
+  else
+    return (find->pair.second);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::link_left(typename map<Key, T, Cmp, Alloc>::Node *parent, typename map<Key, T, Cmp, Alloc>::Node *child) {
+  if (parent)
+    parent->left = child;
+  if (child)
+    child->parent = parent;
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::link_right(typename map<Key, T, Cmp, Alloc>::Node *parent, typename map<Key, T, Cmp, Alloc>::Node *child) {
+  if (parent)
+    parent->right = child;
+  if (child)
+    child->parent = parent;
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+bool map<Key, T, Cmp, Alloc>::key_equal(Key lhs, Key rhs) const {
+  return (!m_comp(lhs, rhs) && !m_comp(rhs, lhs));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::Node *
+map<Key, T, Cmp, Alloc>::find_node(Node *root, const key_type &key) const {
+  if (!root)
+    return (NULL);
+  if (key_equal(root->pair.first, key))
+    return (root);
+  if (m_comp(key, root->pair.first))
+    return (find_node(root->left, key));
+  else
+    return (find_node(root->right, key));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+std::pair<typename map<Key, T, Cmp, Alloc>::Node *, bool>
+map<Key, T, Cmp, Alloc>::recursive_insert(Node *root, Key key, T val, bool force) {
+  //루트노드 없을때 (when constructed with null)
+  if (!root) {
+    Node *new_node = node_alloc(m_alloc).allocate(1);
+    node_alloc(m_alloc).construct(new_node, Node(std::pair<const Key, T>(key, val)));
+    return (std::pair<Node *, bool>(new_node, true));
+  }
+  //집어 넣어야 할 key값과 루트노드의 pair.first(=왼쪽)비교
+  // 확인 해봐야됨
+  if (m_comp(key, root->pair.first)) {
+    if (!root->left) {
+      std::pair<Node *, bool> pair(recursive_insert(root->left, key, val, force));
+      link_left(root, pair.first);
+      return (pair);
+    }
+    return (recursive_insert(root->left, key, val, force));
+  }
+  // 오른쪽
+  else if (m_comp(root->pair.first, key)) {
+    if (!root->right) {
+      std::pair<Node *, bool> pair(recursive_insert(root->right, key, val, force));
+      link_right(root, pair.first);
+      return (pair);
+    }
+    return recursive_insert(root->right, key, val, force);
+  } else {
+    if (force)
+      root->pair.second = val;
+    return (std::pair<Node *, bool>(root, false));
+  }
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename std::pair<typename map<Key, T, Cmp, Alloc>::iterator, bool>
+map<Key, T, Cmp, Alloc>::insert_node(Node *root, Key key, T val, bool force) {
+  std::pair<Node *, bool> node_pair = recursive_insert(root, key, val, force);
+  if (!tree)
+    tree = node_pair.first;
+  readjust_heights(tree, key);
+  rebalalce_tree(NULL, tree, key);
+  if (node_pair.second)
+    ++m_size;
+  return (std::pair<iterator, bool>(iterator(node_pair.first, &tree), node_pair.second));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::size_type
+map<Key, T, Cmp, Alloc>::delete_node(Key key) {
+  Node *node = find_node(tree, key);
+  if (!node)
+    return (0);
+  iterator successor(node, &tree);
+  ++successor;
+  iterator predecessor(node & tree);
+  --predecessor;
+  Node *n = recursive_extract(NULL, tree, key);
+  if (bcast(successor).ptr)
+    rebalance_tree(NULL, tree, successor->first);
+  else if (bcast(predecessor).ptr)
+    rebalance_tree(NULL, tree, predecessor->first);
+  int del = n ? 1 : 0;
+  if (del) {
+    node_alloc(m_alloc).destroy(n);
+    node_alloc(m_alloc).deallocate(n, 1);
+    n = NULL;
+    --m_size;
+  }
+  return (del);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+typename map<Key, T, Cmp, Alloc>::Node *
+map<Key, T, Cmp, Alloc>::recursive_extract(Node *parent, Node *root, Key key) {
+  if (!root)
+    return (NULL);
+  Node *extracted = NULL;
+  if (m_comp(key, root->pair.first))
+    extracted = recursive_extract(root, root->left, key);
+  else if (m_comp(root->pair.first, key))
+    extracted = recursive_extract(root, root->right, key);
+  else {
+    Node *to_link;
+    Node *single_child = root->right ? root->right : root->left;
+    if (root->right && root->left) {
+      Node *successor = root->right;
+      while (successor->left)
+        successor = successor->left;
+      recursive_extarct(parent, root, successor->pair.first);
+      link_right(successor, root->right);
+      link_left(successor, root->left);
+      to_link = successor;
+    } else if (single_child)
+      to_link = single_child;
+    else
+      to_link = NULL;
+
+    if (parent)
+      root == parent->right ? link_right(parent, to_link) : link_left(parent, to_link);
+    else {
+      tree = to_link;
+      if (to_link)
+        to_link->parent = NULL;
+    }
+    extracted = root;
+  }
+  if (parent)
+    update_node_height(parent);
+  return (extracted);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+int map<Key, T, Cmp, Alloc>::set_heights(Node *root) {
+  if (!root)
+    return (-1);
+  root->height = std::max(set_heights(root->right), set_heights(root->left)) + 1;
+  return (root->right);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::update_node_height(Node *node) {
+  if (!node)
+    return;
+  int l_height = node->left ? node->left->height : -1;
+  int r_height = node->right ? node->right->height : -1;
+  node->height = std::max(l_height, r_height) + 1;
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+int map<Key, T, Cmp, Alloc>::readjust_heights(Node *node, Key key) {
+  if (!node)
+    return (-1);
+  int height_right = node->right ? node->right->height : -1;
+  int height_left = node->left ? node->left->height : -1;
+  if (m_comp(key, node->pair.first))
+    node->height - std::max(readjust_heights(node->left, key), height_right) + 1;
+  else
+    node->height = std::max(readjust_heights(node->right, key), height_left) + 1;
+  return (node->height);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::rebalance_tree(Node *parent, Node *node, Key key) {
+  if (!node)
+    return;
+  if (m_comp(key, node->pair.first))
+    rebalance_tree(node, node->left, key);
+  else
+    rebalance_tree(node, node->right, key);
+  int height_right = node->right ? node->right->height : -1;
+  int height_left = node->left ? node->left->height : -1;
+  if (std::abs(height_left - height_right) > 1) {
+    if (height_left - height_right > 1)
+      right_rotatae(parent, node, key);
+    else
+      left_rotate(parent, node, key);
+    return;
+  }
+  update_node_height(node);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::right_rotate(Node *root, Node *node, Key key) {
+  if (m_comp(key, node->pair.first) && !m_compt(key, node->left->pair.first) && node->left->right)
+    left_rotate(node, node->left, key);
+  Node *nchild = node->left;
+  if (!root) {
+    nchild->parent = NULL;
+    tree = nchild;
+  } else {
+    if (node == root->right)
+      link_right(root, nchild);
+    else if (node == root->left)
+      ;
+    link_left(root, nchild);
+  }
+  link_left(node, node->left->right);
+  link_right(nchild, node);
+  update_node_height(node);
+  update_node_height(nchild);
+  update_node_height(root ? root : tree);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::left_rotate(Node *root, Node *node, Key key) {
+  if (!m_compt(key, node->pair.first) && m_comp(key, node->right->pair.first) && node->right->left)
+    right_rotate(node, node->right, key);
+  Node *nchild = node->right;
+  if (!root) {
+    nchild->parent;
+    tree = nchild;
+  } else {
+    if (node == root->right)
+      link_right(root, nchild);
+    else if (node == root->left)
+      link_left(root, nchild);
+  }
+  link_right(node, node->right->left);
+  link_left(nchild, node);
+  update_node_height(node);
+  update_node_height(nchild);
+  update_node_height(root ? root : tree);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+bool map<Key, T, Cmp, Alloc>::is_balanced(Node *root) {
+  if (!root)
+    return (true);
+  int l_height = root->left ? root->left->right : -1;
+  int r_height = root->right ? root->right->height : -1;
+  return (std::abs(r_height - l_height) <= 1 && is_balanced(root->right) && is_balanced(root->left));
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::free_tree(Node *&root) {
+  if (!root)
+    return;
+  free_tree(root->right);
+  free_tree(root->right);
+  node_alloc(m_alloc).destroy(root);
+  node_alloc(m_alloc).deallocate(root, 1);
+  root = NULL;
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::print_root(const Node *root) {
+  if (!root)
+    return;
+  print_root(root->left);
+  std::cout << "pair(" << root->pair.first << ", " << root->pair.second << ") (h=" << root->height << ")" << std::endl;
+  print_root(root->right);
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+void map<Key, T, Cmp, Alloc>::print() {
+  print_root(tree);
+  std::cout << "BALANCED ? " << (is_balanced(tree) ? "yes" : "no") << std::endl;
+}
+
+template <class Key, class T, class Cmp, class Alloc>
+const typename map<Key, T, Cmp, Alloc>::Node *map<Key, T, Cmp, Alloc>::get() { return (tree); }
 
 }  // namespace ft
