@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:13:03 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/13 18:45:31 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/14 16:56:48 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <cstdlib>  //for ptrdiff_h, idk rest yet
 #include <iostream>
 #include <string>
+#include <utility> //for std::pair
 
 namespace ft {
 template <typename Iterator>
