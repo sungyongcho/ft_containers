@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 14:46:12 by lumeyer           #+#    #+#             */
-/*   Updated: 2021/05/20 18:24:58 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/20 23:12:10 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,9 @@
 
 #include "vector.hpp"
 #include "list.hpp"
-// #include "Stack.hpp"
+#include "stack.hpp"
 #include "map.hpp"
 #include "queue.hpp"
-// #include "Set.hpp"
-// #include "Multiset.hpp"
-// #include "Multimap.hpp"
 #include "deque.hpp"
 
 #include <vector>
@@ -76,65 +73,20 @@ std::ostream&	operator<<(std::ostream& stream, std::map<Key, T, Cmp, Alloc>& tar
 	return (stream);
 }
 
-// template <class Key, class T, class Cmp, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, std::multimap<Key, T, Cmp, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename std::multimap<Key, T, Cmp, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << it->first << ", " << it->second << ")";
-// 		if (i != target.size() -1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
-
-// template <class T, class Cmp, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, std::set<T, Cmp, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename std::set<T, Cmp, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << *it << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
-
-// template <class T, class Cmp, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, std::multiset<T, Cmp, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename std::multiset<T, Cmp, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << *it << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
-
-// template <class T, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, std::deque<T, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename std::deque<T, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << *it << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
+template <class T, class Alloc>
+std::ostream&	operator<<(std::ostream& stream, std::deque<T, Alloc>& target)
+{
+	std::cout << "{ ";
+	size_t i = 0;
+	for (typename std::deque<T, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
+	{
+		std::cout << "(" << *it << ")";
+		if (i != target.size() - 1)
+			std::cout << ", ";
+	}
+	std::cout << " }" << std::endl;
+	return (stream);
+}
 
 template <class T, class Alloc>
 std::ostream&	operator<<(std::ostream& stream, ft::vector<T, Alloc>& target)
@@ -166,65 +118,21 @@ std::ostream&	operator<<(std::ostream& stream, ft::map<Key, T, Cmp, Alloc>& targ
 	return (stream);
 }
 
-// template <class Key, class T, class Cmp, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, ft::multimap<Key, T, Cmp, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename ft::multimap<Key, T, Cmp, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << it->first << ", " << it->second << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
 
-// template <class T, class Cmp, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, ft::set<T, Cmp, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename ft::set<T, Cmp, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << *it << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
-
-// template <class T, class Cmp, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, ft::multiset<T, Cmp, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename ft::multiset<T, Cmp, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << *it << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
-
-// template <class T, class Alloc>
-// std::ostream&	operator<<(std::ostream& stream, ft::deque<T, Alloc>& target)
-// {
-// 	std::cout << "{ ";
-// 	size_t i = 0;
-// 	for (typename ft::deque<T, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
-// 	{
-// 		std::cout << "(" << *it << ")";
-// 		if (i != target.size() - 1)
-// 			std::cout << ", ";
-// 	}
-// 	std::cout << " }" << std::endl;
-// 	return (stream);
-// }
+template <class T, class Alloc>
+std::ostream&	operator<<(std::ostream& stream, ft::deque<T, Alloc>& target)
+{
+	std::cout << "{ ";
+	size_t i = 0;
+	for (typename ft::deque<T, Alloc>::iterator it = target.begin(); it != target.end(); ++it, ++i)
+	{
+		std::cout << "(" << *it << ")";
+		if (i != target.size() - 1)
+			std::cout << ", ";
+	}
+	std::cout << " }" << std::endl;
+	return (stream);
+}
 
 template<typename T, class Alloc>
 std::ostream&	operator<<(std::ostream& stream, const ft::list<T, Alloc>& target)
