@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 05:51:39 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 05:56:49 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 07:23:00 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void deque_test() {
 
     std::cout << '\n';
   }
-  //
+  // operator=
   {
     C first(3);   // deque with 3 zero-initialized ints
     C second(5);  // deque with 5 zero-initialized ints
@@ -47,6 +47,49 @@ void deque_test() {
 
     std::cout << "Size of first: " << int(first.size()) << '\n';
     std::cout << "Size of second: " << int(second.size()) << '\n';
+  }
+  //begin
+  {
+    C mydeque;
+
+    for (int i = 1; i <= 5; i++) mydeque.push_back(i);
+
+    std::cout << "mydeque contains:";
+
+    iterator it = mydeque.begin();
+
+    while (it != mydeque.end())
+      std::cout << ' ' << *it++;
+
+    std::cout << '\n';
+  }
+  //end
+  {
+    C mydeque;
+
+    for (int i = 1; i <= 5; i++) mydeque.insert(mydeque.end(), i);
+
+    std::cout << "mydeque contains:";
+
+    iterator it = mydeque.begin();
+
+    while (it != mydeque.end())
+      std::cout << ' ' << *it++;
+
+    std::cout << '\n';
+  }
+  {
+    C myints;
+    std::cout << "0. size: " << myints.size() << '\n';
+
+    for (int i = 0; i < 5; i++) myints.push_back(i);
+    std::cout << "1. size: " << myints.size() << '\n';
+
+    myints.insert(myints.begin(), 5, 100);
+    std::cout << "2. size: " << myints.size() << '\n';
+
+    myints.pop_back();
+    std::cout << "3. size: " << myints.size() << '\n';
   }
 }
 #endif

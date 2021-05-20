@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 18:23:01 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 07:20:52 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 07:29:22 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -200,6 +200,53 @@ class deque {
     set_empty();
     for (InputIter it = first; it != last; it++)
       push_back(*it);
+  }
+
+  template <typename Integer>
+  void m_insert_dispatch(iterator pos, Integer n, Integer val, TrueType) {
+    if (pos == end()) {
+      for (size_type i(0); i < static_cast<size_type>(n); i++)
+        push_back(val);
+      return;
+    }
+    long d(0);
+    d = std::distance(begin(), pos);
+    if (d < 0 || d > (long)size())
+      throw std::invalid_argument("Error: position iterator is not valid");
+    for (size_type i(0); i < static_cast<size_type>(n); i++)
+      push_back(val);
+    for (iterator b = --end(); b != pos + n - 1; --b) {
+      _alloc.destroy(&(*b));
+      _alloc.construct(&(*b), *(b - n));
+    }
+    for (iterator b = pos; b != pos + n; ++b) {
+      _alloc.destroy(&(*b));
+      _alloc.construct(&(*b), val);
+    }
+  }
+  template <typename InputIter>
+  void m_insert_dispatch(iterator pos, InputIter first, InputIter last, FalseType) {
+    if (pos == end()) {
+      for (InputIter it = first; it != last; ++it)
+        push_back(*it);
+      return;
+    }
+    long d, n;
+    d = std::distance(begin(), pos);
+    n = std::distance(first, last);
+    if (d < 0 || d > (long)size() || n < 0)
+      throw std::invalid_argument("Error: invalid iterator(s)");
+    for (InputIter it = first; it != last; ++it)
+      push_back(*it);
+    for (iterator b = --end(); b != pos + n - 1; --b) {
+      _alloc.destroy(&(*b));
+      _alloc.construct(&(*b), *(b - n));
+    }
+    InputIter itb = first;
+    for (iterator b = pos; b != pos + n; ++b, ++itb) {
+      _alloc.destroy(&(*b));
+      _alloc.construct(&(*b), *itb);
+    }
   }
 };
 
@@ -436,7 +483,6 @@ void deque<T, Alloc>::assign(size_type n, const value_type &val) {
     push_back(val);
 }
 
-// /* INSERT */
 template <typename T, class Alloc>
 typename deque<T, Alloc>::iterator deque<T, Alloc>::insert(iterator position, const value_type &val) {
   if (position == end()) {
@@ -483,27 +529,8 @@ void deque<T, Alloc>::insert(iterator position, size_type n, const value_type &v
 template <typename T, class Alloc>
 template <typename I>
 void deque<T, Alloc>::insert(deque<T, Alloc>::iterator position, I first, I last) {
-  if (position == end()) {
-    for (I it = first; it != last; ++it)
-      push_back(*it);
-    return;
-  }
-  long d, n;
-  d = std::distance(begin(), position);
-  n = std::distance(first, last);
-  if (d < 0 || d > (long)size() || n < 0)
-    throw std::invalid_argument("Error: invalid iterator(s)");
-  for (I it = first; it != last; ++it)
-    push_back(*it);
-  for (iterator b = --end(); b != position + n - 1; --b) {
-    _alloc.destroy(&(*b));
-    _alloc.construct(&(*b), *(b - n));
-  }
-  I itb = first;
-  for (iterator b = position; b != position + n; ++b, ++itb) {
-    _alloc.destroy(&(*b));
-    _alloc.construct(&(*b), *itb);
-  }
+  typedef typename ft::is_integer<I>::type Integral;
+  m_insert_dispatch(position, first, last, Integral());
 }
 
 /* ERASE */
