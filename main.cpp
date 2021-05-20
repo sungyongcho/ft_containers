@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:19:00 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 07:45:33 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 08:04:11 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ int main(void) {
   // deque_test<std::deque<int> >();
   // deque_test<ft::deque<int> >();
 
-  stack_test<std::stack<int> >();
-  stack_test<ft::stack<int> >();
+  // stack_test<std::stack<int> >();
+  // stack_test<ft::stack<int> >();
+
+  queue_test<std::queue<int> >();
+  queue_test<ft::queue<int> >();
 }

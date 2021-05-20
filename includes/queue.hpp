@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 18:11:31 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/20 23:17:04 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 08:04:08 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,20 @@
 #define QUEUE_HPP
 
 #include "BaseIterators.hpp"
-#include "vector.hpp"
+#include "deque.hpp"
 #include "list.hpp"
+#include "vector.hpp"
 
 namespace ft {
 
-template <typename T, class C>
+template <typename T, typename C = ft::deque<T> >
 class queue {
  public:
   C c;
   typedef T value_type;
   typedef C container_type;
   typedef size_t size_type;
-  explicit queue(const container_type &ctnr = container_type());
-  bool empty() const;
+  queue(const container_type &ctnr = C()) : c(ctnr) {};  bool empty() const;
   size_type size() const;
   value_type &front();
   const value_type &front() const;
@@ -36,9 +36,6 @@ class queue {
   void push(const value_type &val);
   void pop();
 };
-
-template <typename T, class C>
-queue<T, C>::queue(const container_type &ctnr) { c = ctnr; }
 
 template <typename T, class C>
 bool queue<T, C>::empty() const { return (c.empty()); }

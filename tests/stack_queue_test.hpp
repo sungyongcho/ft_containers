@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 05:46:46 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 07:59:55 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 08:09:31 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,84 @@ void stack_test() {
       mystack.pop();
     }
     std::cout << '\n';
+  }
+}
+
+template <typename C>
+void queue_test() {
+  //empty
+  {
+    C myqueue;
+    int sum(0);
+
+    for (int i = 1; i <= 10; i++) myqueue.push(i);
+
+    while (!myqueue.empty()) {
+      sum += myqueue.front();
+      myqueue.pop();
+    }
+
+    std::cout << "total: " << sum << '\n';
+  }
+  // size()
+  {
+    C myints;
+    std::cout << "0. size: " << myints.size() << '\n';
+
+    for (int i = 0; i < 5; i++) myints.push(i);
+    std::cout << "1. size: " << myints.size() << '\n';
+
+    myints.pop();
+    std::cout << "2. size: " << myints.size() << '\n';
+  }
+
+  //front()
+  {
+    C myqueue;
+
+    myqueue.push(77);
+    myqueue.push(16);
+
+    myqueue.front() -= myqueue.back();  // 77-16=61
+
+    std::cout << "myqueue.front() is now " << myqueue.front() << '\n';
+  }
+  // back()
+  {
+    C myqueue;
+
+    myqueue.push(12);
+    myqueue.push(75);  // this is now the back
+
+    myqueue.back() -= myqueue.front();
+
+    std::cout << "myqueue.back() is now " << myqueue.back() << '\n';
+  }
+  // push()
+  {
+    C myqueue;
+
+    myqueue.push(12);
+    myqueue.push(75);  // this is now the back
+
+    myqueue.back() -= myqueue.front();
+
+    std::cout << "myqueue.back() is now " << myqueue.back() << '\n';
+  }
+  // pop()
+  {
+    C myqueue;
+
+    myqueue.push(1);
+    myqueue.push(2);
+    myqueue.push(3);
+    myqueue.push(4);
+    myqueue.push(5);
+
+    std::cout << "myqueue.back() before " << myqueue.front() << '\n';
+
+    myqueue.pop();
+    std::cout << "myqueue.back() after " << myqueue.front() << '\n';
   }
 }
 
