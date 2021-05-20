@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 18:23:01 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 03:14:10 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 05:51:03 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -635,22 +635,6 @@ void deque<T, Alloc>::set_empty() {
   dq._tail = -1;
   dq._headchunk = 0;
   dq._tailchunk = 0;
-}
-
-template <typename T, class Alloc>
-void deque<T, Alloc>::dump_chunks() {
-  for (typename ft::vector<pointer>::iterator it = dq._pmap.begin(); it != dq._pmap.end(); ++it) {
-    std::cout << "{";
-    for (size_type i = 0; i < dq._chunksize; ++i)
-      std::cout << (*it)[i] << (i == dq._chunksize - 1 ? "" : ", ");
-    std::cout << "}" << std::endl;
-  }
-  std::cout << "size of map : " << dq._pmap.size() << std::endl;
-  std::cout << "chunk_size : " << dq._chunksize << std::endl;
-  std::cout << "capacity : " << dq._capacity << std::endl;
-  std::cout << "size : " << dq._size << std::endl;
-  std::cout << "head : " << dq._head << std::endl;
-  std::cout << "tail : " << dq._tail << std::endl;
 }
 
 }  // namespace ft

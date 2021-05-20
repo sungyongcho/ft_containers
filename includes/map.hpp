@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 22:06:40 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/20 23:16:33 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 05:47:19 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -738,21 +738,6 @@ void map<Key, T, Cmp, Alloc>::free_tree(Node *&root) {
   node_alloc(m_alloc).destroy(root);
   node_alloc(m_alloc).deallocate(root, 1);
   root = NULL;
-}
-
-template <class Key, class T, class Cmp, class Alloc>
-void map<Key, T, Cmp, Alloc>::print_root(const Node *root) {
-  if (!root)
-    return;
-  print_root(root->left);
-  std::cout << "pair(" << root->pair.first << ", " << root->pair.second << ") (h=" << root->height << ")" << std::endl;
-  print_root(root->right);
-}
-
-template <class Key, class T, class Cmp, class Alloc>
-void map<Key, T, Cmp, Alloc>::print() {
-  print_root(tree);
-  std::cout << "BALANCED ? " << (is_balanced(tree) ? "yes" : "no") << std::endl;
 }
 
 template <class Key, class T, class Cmp, class Alloc>
