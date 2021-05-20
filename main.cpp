@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:19:00 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 07:20:50 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 07:45:33 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ int main(void) {
   // map_test_2<std::map<char, std::string> >();
   // map_test_2<ft::map<char, std::string> >();
 
-  deque_test<std::deque<int> >();
-  deque_test<ft::deque<int> >();
+  // deque_test<std::deque<int> >();
+  // deque_test<ft::deque<int> >();
 
+  stack_test<std::stack<int> >();
+  stack_test<ft::stack<int> >();
 }

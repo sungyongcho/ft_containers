@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:08:32 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/20 23:17:26 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 07:56:58 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,14 @@
 
 namespace ft {
 
-template <typename T, class C>
+template <typename T, typename C = ft::deque<T> >
 class stack {
  public:
   C c;
   typedef T value_type;
   typedef C container_type;
   typedef size_t size_type;
-  explicit stack(const container_type &ctnr = container_type());
+   stack(const container_type &ctnr = C()) : c(ctnr) {};
   bool empty() const;
   size_type size() const;
   value_type &top();
@@ -35,9 +35,6 @@ class stack {
   void push(const value_type &val);
   void pop();
 };
-
-template <typename T, class C>
-stack<T, C>::stack(const container_type &ctnr) { c = ctnr; }
 
 template <typename T, class C>
 bool stack<T, C>::empty() const { return (c.empty()); }
