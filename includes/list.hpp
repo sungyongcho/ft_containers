@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:32:01 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 03:19:27 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 04:03:40 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,13 +93,46 @@ class list {
   }
 
  public:
-  explicit list(const allocator_type &alloc = allocator_type());
-  explicit list(size_t n, const T &val = T(), const allocator_type &alloc = allocator_type());
+  explicit list(const allocator_type &alloc = allocator_type())
+      : _size(0), _alloc(alloc) {
+    _sentry = node_alloc(_alloc).allocate(1);
+    sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
+    link(_sentry, _sentry);
+  }
+
+  explicit list(size_t n, const T &val, const allocator_type &alloc = allocator_type())
+      : _size(0), _alloc(alloc) {
+    _sentry = node_alloc(_alloc).allocate(1);
+    sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
+    link(_sentry, _sentry);
+    for (size_t i(0); i < static_cast<size_type>(n); i++)
+      push_back(val);
+    ;
+  }
+
   template <typename I>
-  list(I first, I last, const allocator_type &alloc = allocator_type());
-  list(const list<T, Alloc> &target);
+  explicit list(I first, I last, const allocator_type &alloc = allocator_type())
+      : _size(0), _alloc(alloc) {
+    typedef typename ft::is_integer<I>::type Integral;
+    m_initialize_dispatch(first, last, Integral());
+  }
+
+  list(const list<T, Alloc> &target)
+      : _size(0) {
+    _sentry = node_alloc(_alloc).allocate(1);
+    sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
+    link(_sentry, _sentry);
+    *this = target;
+  }
+
+  ~list() {
+    empty_list();
+    sentry_alloc(_alloc).destroy((Sentry *)_sentry);
+    node_alloc(_alloc).deallocate(_sentry, 1);
+    _sentry = NULL;
+  }
+
   list<T, Alloc> &operator=(const list<T, Alloc> &target);
-  ~list();
 
   typedef list_iterator<T, false> iterator;
   typedef list_iterator<const T, true> const_iterator;
@@ -176,6 +209,48 @@ class list {
   friend bool operator>(const list<U, V> &, const list<U, V> &);
   template <typename U, typename V>
   friend bool operator>=(const list<U, V> &, const list<U, V> &);
+
+ protected:
+  template <typename Integer>
+  void m_initialize_dispatch(Integer n, Integer val, TrueType) {
+    _sentry = node_alloc(_alloc).allocate(1);
+    sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
+    link(_sentry, _sentry);
+    for (size_t i(0); i < static_cast<size_type>(n); i++)
+      push_back(val);
+  }
+  template <typename InputIter>
+  void m_initialize_dispatch(InputIter first, InputIter last, FalseType) {
+    _sentry = node_alloc(_alloc).allocate(1);
+    sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
+    link(_sentry, _sentry);
+    assign(first, last);
+  }
+
+  template <typename Integer>
+  void m_insert_dispatch(iterator pos, Integer n, Integer val, TrueType) {
+    for (size_t i(0); i < static_cast<size_t>(n); i++)
+      insert(pos, val);
+  }
+
+  template <typename InputIter>
+  void m_insert_dispatch(iterator pos, InputIter first, InputIter last, FalseType) {
+    for (InputIter it = first; it != last; it++)
+      insert(pos, *it);
+  }
+
+  template <typename Integer>
+  void m_assign_dispatch(Integer n, Integer val, TrueType) {
+    empty_list();
+    for (size_type i(0); i < static_cast<size_t>(n); i++)
+      push_back(val);
+  }
+  template <typename InputIter>
+  void m_assign_dispatch(InputIter first, InputIter last, FalseType) {
+    empty_list();
+    for ((void)first; first != last; first++)
+      push_back(*first);
+  }
 };
 
 template <typename T, class Alloc>
@@ -241,51 +316,6 @@ void list<T, Alloc>::empty_list() {
   }
   link(_sentry, _sentry);
   _size = 0;
-}
-/* const*/
-template <typename T, class Alloc>
-list<T, Alloc>::list(const allocator_type &alloc)
-    : _size(0), _alloc(alloc) {
-  _sentry = node_alloc(_alloc).allocate(1);
-  sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
-  link(_sentry, _sentry);
-}
-
-template <typename T, class Alloc>
-list<T, Alloc>::list(size_t n, const T &val, const allocator_type &alloc)
-    : _size(0), _alloc(alloc) {
-  _sentry = node_alloc(_alloc).allocate(1);
-  sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
-  link(_sentry, _sentry);
-  for (size_t i(0); i < n; i++)
-    push_back(val);
-}
-
-template <typename T, class Alloc>
-template <typename I>
-list<T, Alloc>::list(I first, I last, const allocator_type &alloc)
-    : _size(0), _alloc(alloc) {
-  _sentry = node_alloc(_alloc).allocate(1);
-  sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
-  link(_sentry, _sentry);
-  assign(first, last);
-}
-
-template <typename T, class Alloc>
-list<T, Alloc>::list(const list<T, Alloc> &target)
-    : _size(0) {
-  _sentry = node_alloc(_alloc).allocate(1);
-  sentry_alloc(_alloc).construct((Sentry *)_sentry, Sentry());
-  link(_sentry, _sentry);
-  *this = target;
-}
-
-template <typename T, class Alloc>
-list<T, Alloc>::~list() {
-  empty_list();
-  sentry_alloc(_alloc).destroy((Sentry *)_sentry);
-  node_alloc(_alloc).deallocate(_sentry, 1);
-  _sentry = NULL;
 }
 
 template <typename T, class Alloc>
@@ -389,11 +419,10 @@ const T &list<T, Alloc>::back() const {
 
 /* assign */
 template <typename T, class Alloc>
-template <typename I>  // why twice?!?!?!?!
+template <typename I>
 void list<T, Alloc>::assign(I first, I last) {
-  empty_list();
-  for ((void)first; first != last; first++)
-    push_back(*first);
+  typedef typename ft::is_integer<I>::type Integral;
+  m_assign_dispatch(first, last, Integral());
 }
 
 template <typename T, class Alloc>
@@ -420,8 +449,8 @@ void list<T, Alloc>::insert(iterator position, size_type n, const value_type &va
 template <typename T, class Alloc>
 template <typename I>
 void list<T, Alloc>::insert(list<T, Alloc>::iterator position, I first, I last) {
-  for (I it = first; it != last; it++)
-    insert(position, *it);
+  typedef typename ft::is_integer<I>::type Integral;
+  m_insert_dispatch(position, first, last, Integral());
 }
 
 template <typename T, class Alloc>
