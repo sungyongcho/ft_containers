@@ -6,12 +6,12 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:32:01 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/05 16:20:14 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 03:19:27 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
-
+#ifndef LIST_HPP
+#define LIST_HPP
 #include "BaseIterators.hpp"
 
 namespace ft {
@@ -653,3 +653,5 @@ void swap(list<T, Alloc> &x, list<T, Alloc> &y) {
   y = tmp;
 }
 }  // namespace ft
+
+#endif

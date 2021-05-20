@@ -6,12 +6,12 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/20 23:10:13 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/20 23:15:16 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <list>
-#pragma once
+#ifndef BASEITERATORS_HPP
+#define BASEITERATORS_HPP
 
 #include "utils.hpp"
 
@@ -660,3 +660,5 @@ class base_dq_iterator {
 };
 
 }  // namespace ft
+
+#endif

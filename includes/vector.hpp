@@ -6,13 +6,15 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 16:28:47 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/06 16:12:18 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 03:04:47 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef VECTOR_HPP
+#define VECTOR_HPP
 
 #include "BaseIterators.hpp"
+#include "utils.hpp"
 
 namespace ft {
 
@@ -89,13 +91,31 @@ class vector {
   }
 
  public:
-  explicit vector(const allocator_type &alloc = allocator_type());
-  explicit vector(size_t n, const value_type &val = value_type(), const allocator_type &alloc = allocator_type());
+  explicit vector(const allocator_type &alloc = allocator_type())
+      : _size(0), _capacity(0), _array(NULL), _alloc(alloc){};
+
+  explicit vector(size_type n, const T &val = value_type(), const allocator_type &alloc = allocator_type())
+      : _size(n), _capacity(n), _alloc(alloc) {
+    _array = _alloc.allocate(_size);
+    for (size_t i(0); i < _size; i++)
+      _alloc.construct(_array + i, val);
+  };
+
   template <typename I>
-  vector(I first, I last, const allocator_type &alloc = allocator_type());
-  vector(const vector<T, Alloc> &target);
+  vector(I first, I last, const allocator_type &alloc = allocator_type())
+      : _size(0), _capacity(0), _array(NULL), _alloc(alloc) {
+    typedef typename ft::is_integer<I>::type Integral;
+    m_initialize_dispatch(first, last, Integral());
+  };
+  vector(const vector<T, Alloc> &target) : _array(NULL) { *this = target; };
+
   vector<T, Alloc> &operator=(const vector<T, Alloc> &target);
-  ~vector();
+
+  ~vector() {
+    for (size_type i = 0; i < _size; ++i)
+      _alloc.destroy(_array + i);
+    _alloc.deallocate(_array, _size);
+  };
 
   // clang-format off
   typedef vector_iterator<T, false>                iterator;
@@ -158,36 +178,75 @@ class vector {
   friend bool operator>(const vector<U, V> &, const vector<U, V> &);
   template <typename U, class V>
   friend bool operator>=(const vector<U, V> &, const vector<U, V> &);
+
+ protected:
+  template <typename Integer>
+  void m_insert_dispatch(iterator pos, Integer n, Integer val, TrueType) {
+    fill_insert(pos, n, val);
+  }
+
+  template <typename InputIter>
+  void m_insert_dispatch(iterator pos, InputIter first, InputIter last, FalseType) {
+    for (; first != last; ++first) {
+      pos = insert(pos, *first);
+      ++pos;
+    }
+  };
+  void fill_insert(iterator pos, size_t n, const value_type &x) {
+    size_type ind(0);
+    for (iterator b = begin(); b != pos; b++, ind++) {
+    }
+    for (size_type i(0); i < n; i++)
+      push_back(x);
+    pos = _array + ind;
+    for (iterator b = --end(); b != pos + n - 1; b--) {
+      _alloc.destroy(bcast(b).ptr);
+      _alloc.construct(bcast(b).ptr, *(b - n));
+    }
+    for (iterator b = pos; b != pos + n; b++) {
+      _alloc.destroy(bcast(b).ptr);
+      _alloc.construct(bcast(b).ptr, x);
+    }
+  }
+  template <typename Integer>
+  void m_initialize_dispatch(Integer n, Integer val, TrueType) {
+    _array = _alloc.allocate(n);
+    _size = static_cast<size_t>(n);
+    for (size_t i(0); i < static_cast<size_t>(n) ; i++)
+      _alloc.construct(_array + i, val);
+  }
+  template <typename InputIter>
+  void m_initialize_dispatch(InputIter first, InputIter last, FalseType) {
+    assign(static_cast<InputIter>(first), static_cast<InputIter>(last));
+  }
+
+  template <typename Integer>
+  void m_assign_dispatch(Integer n, Integer val, TrueType) {
+    if (n < 0)
+      throw std::bad_alloc();
+    if (static_cast<size_t>(n) > _capacity)
+      realloc(n);
+    for (size_type i = 0; i < size(); ++i)
+      _alloc.destroy(&at(i));
+    _size = 0;
+    for (size_type i(0); i < static_cast<size_t>(n); i++)
+      push_back(val);
+  }
+
+  template <typename InputIter>
+  void m_assign_dispatch(InputIter first, InputIter last, FalseType) {
+    size_type n(0);
+    for (InputIter it = first; it != last; it++, n++) {
+    }
+    if (n > _capacity)
+      realloc(n);
+    for (size_type i = 0; i < size(); ++i)
+      _alloc.destroy(&at(i));
+    _size = 0;
+    for (InputIter it = first; it != last; it++)
+      push_back(*it);
+  }
 };
-
-template <typename T, class Alloc>
-vector<T, Alloc>::vector(const allocator_type &alloc)
-    : _size(0), _capacity(0), _array(NULL), _alloc(alloc) {}
-
-template <typename T, class Alloc>
-vector<T, Alloc>::vector(size_t n, const T &val, const allocator_type &alloc)
-    : _size(n), _capacity(n), _alloc(alloc) {
-  _array = _alloc.allocate(_size);
-  for (size_t i(0); i < _size ; i++)
-    _alloc.construct(_array + i, val);
-}
-
-template <typename T, class Alloc>
-template <typename I>
-vector<T, Alloc>::vector(I first, I last, const allocator_type &alloc)
-    : _size(0), _capacity(0), _array(nullptr), _alloc(alloc) {
-  this->assign(first, last);
-}
-
-template <typename T, class Alloc>
-vector<T, Alloc>::vector(const vector<T, Alloc> &target) : _array(nullptr) { *this = target; }
-
-template <typename T, class Alloc>
-vector<T, Alloc>::~vector() {
-  for (size_type i = 0; i < _size; ++i)
-    _alloc.destroy(_array + i);
-  _alloc.deallocate(_array, _size);
-}
 
 template <typename T, class Alloc>
 void vector<T, Alloc>::realloc(size_t nsize) {
@@ -333,21 +392,6 @@ const T &vector<T, Alloc>::back() const {
 }
 
 template <typename T, class Alloc>
-template <typename I>
-void vector<T, Alloc>::assign(I first, I last) {
-  size_type n(0);
-  for (I it = first; it != last; it++, n++) {
-  }
-  if (n > _capacity)
-    realloc(n);
-  for (size_type i = 0; i < size(); ++i)
-    _alloc.destroy(&at(i));  // let's check
-  _size = 0;
-  for (I it = first; it != last; it++)
-    push_back(*it);
-}
-
-template <typename T, class Alloc>
 void vector<T, Alloc>::assign(size_type n, const value_type &val) {
   if (n < 0)
     throw std::bad_alloc();
@@ -358,6 +402,13 @@ void vector<T, Alloc>::assign(size_type n, const value_type &val) {
   _size = 0;
   for (size_type i(0); i < n; i++)
     push_back(val);
+}
+
+template <typename T, class Alloc>
+template <typename I>
+void vector<T, Alloc>::assign(I first, I last) {
+  typedef typename ft::is_integer<I>::type Integral;
+  m_assign_dispatch(first, last, Integral());
 }
 
 template <typename T, class Alloc>
@@ -399,23 +450,8 @@ void vector<T, Alloc>::insert(iterator position, size_type n, const value_type &
 template <typename T, class Alloc>
 template <typename I>
 void vector<T, Alloc>::insert(vector<T, Alloc>::iterator position, I first, I last) {
-  size_type ind(0);
-  size_type n(0);
-
-  for (iterator b = begin(); b != position; b++, ind++) {
-  }
-  for (I it = first; it != last; it++, n++)
-    push_back(*it);
-  position = iterator(_array + ind);
-  for (iterator b = --end(); b != position + n - 1; b--) {
-    _alloc.destroy(bcast(b).ptr);
-    _alloc.construct(bcast(b).ptr, *(b - n));
-  }
-  I itb = first;
-  for (iterator b = position; itb != last; b++, itb++) {
-    _alloc.destroy(bcast(b).ptr);
-    _alloc.construct(bcast(b).ptr, *itb);
-  }
+  typedef typename ft::is_integer<I>::type Integral;
+  m_insert_dispatch(position, first, last, Integral());
 }
 
 template <typename T, class Alloc>
@@ -531,3 +567,5 @@ void swap(vector<T, Alloc> &x, vector<T, Alloc> &y) {
   y = tmp;
 }
 }  // namespace ft
+
+#endif

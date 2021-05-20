@@ -6,11 +6,12 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 18:11:31 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/20 18:11:32 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/20 23:17:04 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef QUEUE_HPP
+#define QUEUE_HPP
 
 #include "BaseIterators.hpp"
 #include "vector.hpp"
@@ -74,3 +75,5 @@ template <class T, class C>
 bool operator>=(const queue<T, C> &lhs, const queue<T, C> &rhs) { return lhs.c >= rhs.c; }
 
 }  // namespace ft
+
+#endif

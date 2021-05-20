@@ -6,11 +6,12 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 23:08:32 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/20 23:09:56 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/20 23:17:26 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#pragma once
+#ifndef STACK_HPP
+#define STACK_HPP
 
 #include "BaseIterators.hpp"
 #include "deque.hpp"
@@ -70,3 +71,5 @@ template <class T, class C>
 bool operator>=(const stack<T, C> &lhs, const stack<T, C> &rhs) { return lhs.c >= rhs.c; }
 
 }  // namespace ft
+
+#endif
