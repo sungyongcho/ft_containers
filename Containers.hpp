@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/04 14:46:12 by lumeyer           #+#    #+#             */
-/*   Updated: 2021/05/13 18:45:56 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/20 18:24:58 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@
 #include "list.hpp"
 // #include "Stack.hpp"
 #include "map.hpp"
-// #include "Queue.hpp"
+#include "queue.hpp"
 // #include "Set.hpp"
 // #include "Multiset.hpp"
 // #include "Multimap.hpp"
-// #include "Deque.hpp"
+#include "deque.hpp"
 
 #include <vector>
 #include <list>
