@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 18:23:01 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 05:51:03 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 07:20:52 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,18 +152,61 @@ class deque {
   friend bool operator>(const deque<U, V> &, const deque<U, V> &);
   template <typename U, class V>
   friend bool operator>=(const deque<U, V> &, const deque<U, V> &);
-};
 
-//  dP""b8 888888  dP"Yb  88""Yb    dP 8888b.  888888  dP"Yb  88""Yb
-// dP   `"   88   dP   Yb 88__dP   dP   8I  Yb   88   dP   Yb 88__dP
-// Yb        88   Yb   dP 88"Yb   dP    8I  dY   88   Yb   dP 88"Yb
-//  YboodP   88    YbodP  88  Yb dP    8888Y"    88    YbodP  88  Yb
+ protected:
+  template <typename Integer>
+  void m_initialize_dispatch(Integer n, Integer val, TrueType) {
+    dq._chunksize = std::max(16 * sizeof(value_type), 4096ul) / sizeof(value_type);
+    pointer array = _alloc.allocate(dq._chunksize);
+    dq._pmap.push_back(array);
+    dq._capacity = dq._chunksize;
+    assign(n, val);
+  }
+  template <typename InputIter>
+  void m_initialize_dispatch(InputIter first, InputIter last, FalseType) {
+    dq._chunksize = std::max(16 * sizeof(value_type), 4096ul) / sizeof(value_type);
+    pointer array = _alloc.allocate(dq._chunksize);
+    dq._pmap.push_back(array);
+    dq._capacity = dq._chunksize;
+    assign(first, last);
+  }
+
+  template <typename Integer>
+  void m_assign_dispatch(Integer n, Integer val, TrueType) {
+    if (static_cast<size_type>(n) < 0 || (size_type)n > max_size())
+      throw std::bad_alloc();
+    if (static_cast<size_type>(n) > dq._capacity)
+      expand(substract_size_t(static_cast<size_type>(n), dq._capacity) / sizeof(value_type) + 1);
+    for (size_type i = 0; i < size(); ++i)
+      _alloc.destroy(&this->at(i));
+    dq._size = 0;
+    set_empty();
+    for (size_type i = 0; i < static_cast<size_t>(n); ++i)
+      push_back(val);
+  }
+
+  template <typename InputIter>
+  void m_assign_dispatch(InputIter first, InputIter last, FalseType) {
+    long n(0);
+    n = std::distance(first, last);
+    if ((size_type)n < 0 || (size_type)n > max_size())
+      throw std::bad_alloc();
+    long cap = dq._capacity;
+    if (n > cap)
+      expand((n - cap) / sizeof(value_type) + 1);
+    for (size_type i = 0; i < size(); ++i)
+      _alloc.destroy(&this->at(i));
+    dq._size = 0;
+    set_empty();
+    for (InputIter it = first; it != last; it++)
+      push_back(*it);
+  }
+};
 
 template <typename T, class Alloc>
 deque<T, Alloc>::deque(const allocator_type &alloc)
     : _alloc(alloc) {
   dq._chunksize = std::max(16 * sizeof(value_type), 4096ul) / sizeof(value_type);
-  // dq._chunksize = 4;
   pointer array = _alloc.allocate(dq._chunksize);
   dq._pmap.push_back(array);
   dq._capacity = dq._chunksize;
@@ -183,11 +226,8 @@ template <typename T, class Alloc>
 template <typename I>
 deque<T, Alloc>::deque(I first, I last, const allocator_type &alloc)
     : _alloc(alloc) {
-  dq._chunksize = std::max(16 * sizeof(value_type), 4096ul) / sizeof(value_type);
-  pointer array = _alloc.allocate(dq._chunksize);
-  dq._pmap.push_back(array);
-  dq._capacity = dq._chunksize;
-  assign(first, last);
+  typedef typename ft::is_integer<I>::type Integral;
+  m_initialize_dispatch(first, last, Integral());
 }
 
 template <typename T, class Alloc>
@@ -209,16 +249,9 @@ deque<T, Alloc>::~deque() {
   dq._pmap.clear();
 }
 
-// 8b    d8 888888 8b    d8 88""Yb 888888 88""Yb     888888 88   88 88b 88  dP""b8 .dP"Y8
-// 88b  d88 88__   88b  d88 88__dP 88__   88__dP     88__   88   88 88Yb88 dP   `" `Ybo."
-// 88YbdP88 88""   88YbdP88 88""Yb 88""   88"Yb      88""   Y8   8P 88 Y88 Yb      o.`Y8b
-// 88 YY 88 888888 88 YY 88 88oodP 888888 88  Yb     88     `YbodP' 88  Y8  YboodP 8bodP'
-
-/* SIZE */
 template <typename T, class Alloc>
 size_t deque<T, Alloc>::size() const { return (dq._size); }
 
-/* RESIZE */
 template <typename T, class Alloc>
 void deque<T, Alloc>::resize(size_type n, value_type val) {
   if (n > max_size() || n < 0)
@@ -385,19 +418,8 @@ const T &deque<T, Alloc>::back() const {
 template <typename T, class Alloc>
 template <typename I>
 void deque<T, Alloc>::assign(I first, I last) {
-  long n(0);
-  n = std::distance(first, last);
-  if (n < 0 || (size_type)n > max_size())
-    throw std::bad_alloc();
-  long cap = dq._capacity;
-  if (n > cap)
-    expand((n - cap) / sizeof(value_type) + 1);
-  for (size_type i = 0; i < size(); ++i)
-    _alloc.destroy(&this->at(i));
-  dq._size = 0;
-  set_empty();
-  for (I it = first; it != last; it++)
-    push_back(*it);
+  typedef typename ft::is_integer<I>::type Integral;
+  m_assign_dispatch(first, last, Integral());
 }
 
 template <typename T, class Alloc>
