@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/06 22:06:40 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 19:44:52 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 20:04:54 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -233,7 +233,6 @@ map<Key, T, Cmp, Alloc>::operator=(const map<Key, T, Cmp, Alloc> &target) {
 template <class Key, class T, class Cmp, class Alloc>
 map<Key, T, Cmp, Alloc>::~map() { free_tree(tree); }
 
-// BEGIN
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::const_iterator
 map<Key, T, Cmp, Alloc>::begin() const {
@@ -251,7 +250,6 @@ map<Key, T, Cmp, Alloc>::begin() {
   return (iterator(it, &tree));
 }
 
-// END
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::const_iterator
 map<Key, T, Cmp, Alloc>::end() const {
@@ -263,7 +261,6 @@ map<Key, T, Cmp, Alloc>::end() {
   return (iterator(NULL, &tree));
 }
 
-// RBEGIN
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::const_reverse_iterator
 map<Key, T, Cmp, Alloc>::rbegin() const {
@@ -275,7 +272,6 @@ map<Key, T, Cmp, Alloc>::rbegin() {
   return reverse_iterator(end());
 }
 
-// REND
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::const_reverse_iterator
 map<Key, T, Cmp, Alloc>::rend() const {
@@ -287,7 +283,6 @@ map<Key, T, Cmp, Alloc>::rend() {
   return reverse_iterator(begin());
 }
 
-// INSERT
 template <class Key, class T, class Cmp, class Alloc>
 std::pair<typename map<Key, T, Cmp, Alloc>::iterator, bool>
 map<Key, T, Cmp, Alloc>::insert(const typename map<Key, T, Cmp, Alloc>::value_type &val) {
@@ -320,7 +315,6 @@ void map<Key, T, Cmp, Alloc>::insert(I first, I last) {
     insert_node(tree, it->first, it->second, false);
 }
 
-// ERASE
 template <class Key, class T, class Cmp, class Alloc>
 void map<Key, T, Cmp, Alloc>::erase(iterator position) {
   delete_node(position->first);
@@ -342,55 +336,47 @@ void map<Key, T, Cmp, Alloc>::erase(iterator first, iterator last) {
   }
 }
 
-// EMPTY
 template <class Key, class T, class Cmp, class Alloc>
 bool map<Key, T, Cmp, Alloc>::empty() const {
   return (!m_size);
 }
 
-// SIZE
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::size_type
 map<Key, T, Cmp, Alloc>::size() const {
   return (m_size);
 }
 
-// MAX SIZE
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::size_type
 map<Key, T, Cmp, Alloc>::max_size() const {
   return (std::numeric_limits<size_type>::max() / sizeof(Node));
 }
 
-// SWAP
 template <class Key, class T, class Cmp, class Alloc>
 void map<Key, T, Cmp, Alloc>::swap(map<Key, T, Cmp, Alloc> &x) {
   std::swap(tree, x.tree);
   std::swap(m_size, x.m_size);
 }
 
-// CLEAR
 template <class Key, class T, class Cmp, class Alloc>
 void map<Key, T, Cmp, Alloc>::clear() {
   free_tree(tree);
   m_size = 0;
 }
 
-// KEY_COMP
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::key_compare
 map<Key, T, Cmp, Alloc>::key_comp() const {
   return (m_comp);
 }
 
-// VALUE_COMP
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::value_compare
 map<Key, T, Cmp, Alloc>::value_comp() const {
   return (value_compare(m_comp));
 }
 
-// FIND
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::iterator
 map<Key, T, Cmp, Alloc>::find(const key_type &k) {
@@ -412,7 +398,6 @@ map<Key, T, Cmp, Alloc>::find(const key_type &k) const {
     return end();
 }
 
-// COUNT
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::size_type
 map<Key, T, Cmp, Alloc>::count(const key_type &k) const {
@@ -420,7 +405,6 @@ map<Key, T, Cmp, Alloc>::count(const key_type &k) const {
   return (node ? 1 : 0);
 }
 
-// LOWER BOUND
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::iterator
 map<Key, T, Cmp, Alloc>::lower_bound(const key_type &k) {
@@ -442,7 +426,6 @@ map<Key, T, Cmp, Alloc>::lower_bound(const key_type &k) const {
   return end;
 }
 
-// UPPER BOUND
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::iterator
 map<Key, T, Cmp, Alloc>::upper_bound(const key_type &k) {
@@ -453,6 +436,7 @@ map<Key, T, Cmp, Alloc>::upper_bound(const key_type &k) {
       return it;
   return end;
 }
+
 template <class Key, class T, class Cmp, class Alloc>
 typename map<Key, T, Cmp, Alloc>::const_iterator
 map<Key, T, Cmp, Alloc>::upper_bound(const key_type &k) const {
@@ -464,12 +448,12 @@ map<Key, T, Cmp, Alloc>::upper_bound(const key_type &k) const {
   return end;
 }
 
-// EQUAL RANGE
 template <class Key, class T, class Cmp, class Alloc>
 std::pair<typename map<Key, T, Cmp, Alloc>::const_iterator, typename map<Key, T, Cmp, Alloc>::const_iterator>
 map<Key, T, Cmp, Alloc>::equal_range(const key_type &k) const {
   return std::pair<const_iterator, const_iterator>(lower_bound(k), upper_bound(k));
 }
+
 template <class Key, class T, class Cmp, class Alloc>
 std::pair<typename map<Key, T, Cmp, Alloc>::iterator, typename map<Key, T, Cmp, Alloc>::iterator>
 map<Key, T, Cmp, Alloc>::equal_range(const key_type &k) {

@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/20 18:23:01 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 07:29:22 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 20:03:28 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -315,15 +315,12 @@ void deque<T, Alloc>::resize(size_type n, value_type val) {
   }
 }
 
-/* MAX_SIZE */
 template <typename T, class Alloc>
 size_t deque<T, Alloc>::max_size() const { return (std::numeric_limits<size_type>::max() / sizeof(value_type)); }
 
-/* EMPTY */
 template <typename T, class Alloc>
 bool deque<T, Alloc>::empty() const { return !dq._size; }
 
-/* PUSH_BACK */
 template <typename T, class Alloc>
 void deque<T, Alloc>::push_back(const T &e) {
   if (empty()) {
@@ -343,7 +340,6 @@ void deque<T, Alloc>::push_back(const T &e) {
   ++dq._size;
 }
 
-/* POP_BACK */
 template <typename T, class Alloc>
 void deque<T, Alloc>::pop_back() {
   if (empty())
@@ -358,7 +354,6 @@ void deque<T, Alloc>::pop_back() {
   --dq._size;
 }
 
-/* PUSH_FRONT */
 template <typename T, class Alloc>
 void deque<T, Alloc>::push_front(const T &e) {
   if (empty()) {
@@ -378,7 +373,6 @@ void deque<T, Alloc>::push_front(const T &e) {
   ++dq._size;
 }
 
-/* POP_FRONT */
 template <typename T, class Alloc>
 void deque<T, Alloc>::pop_front() {
   if (empty())
@@ -393,7 +387,6 @@ void deque<T, Alloc>::pop_front() {
   --dq._size;
 }
 
-// /* ITERATEURS */
 template <typename T, class Alloc>
 typename deque<T, Alloc>::const_iterator deque<T, Alloc>::begin() const { return (const_iterator(dq._head, &dq)); }
 template <typename T, class Alloc>
@@ -414,7 +407,6 @@ typename deque<T, Alloc>::const_reverse_iterator deque<T, Alloc>::rend() const {
 template <typename T, class Alloc>
 typename deque<T, Alloc>::reverse_iterator deque<T, Alloc>::rend() { return reverse_iterator(begin()); }
 
-/* AT */
 template <typename T, class Alloc>
 T &deque<T, Alloc>::at(size_type i) {
   if (i < 0 || i >= size())
@@ -431,7 +423,6 @@ const T &deque<T, Alloc>::at(size_type i) const {
   return (dq._pmap[index / dq._chunksize][index % dq._chunksize]);
 }
 
-/* FRONT */
 template <typename T, class Alloc>
 T &deque<T, Alloc>::front() {
   if (!dq._size)
@@ -446,7 +437,6 @@ const T &deque<T, Alloc>::front() const {
   return at(0);
 }
 
-/* BACK */
 template <typename T, class Alloc>
 T &deque<T, Alloc>::back() {
   if (!dq._size)
@@ -461,7 +451,6 @@ const T &deque<T, Alloc>::back() const {
   return at(dq._size - 1);
 }
 
-// /* ASSIGN */
 template <typename T, class Alloc>
 template <typename I>
 void deque<T, Alloc>::assign(I first, I last) {
@@ -533,7 +522,6 @@ void deque<T, Alloc>::insert(deque<T, Alloc>::iterator position, I first, I last
   m_insert_dispatch(position, first, last, Integral());
 }
 
-/* ERASE */
 template <typename T, class Alloc>
 typename deque<T, Alloc>::iterator deque<T, Alloc>::erase(iterator position) {
   if (position == end()) {
@@ -567,7 +555,6 @@ typename deque<T, Alloc>::iterator deque<T, Alloc>::erase(iterator first, iterat
   return (first);
 }
 
-/* SWAP */
 template <typename T, class Alloc>
 void deque<T, Alloc>::swap(deque<T, Alloc> &x) {
   std::swap(this->dq._size, x.dq._size);
@@ -582,7 +569,6 @@ void deque<T, Alloc>::swap(deque<T, Alloc> &x) {
   std::swap(this->dq._tailchunk, x.dq._tailchunk);
 }
 
-/* CLEAR */
 template <typename T, class Alloc>
 void deque<T, Alloc>::clear() {
   for (iterator it = begin(); it != end(); ++it)
@@ -591,7 +577,6 @@ void deque<T, Alloc>::clear() {
   dq._size = 0;
 }
 
-// /* OPERATOR OVERLOADS */
 template <typename T, class Alloc>
 const T &deque<T, Alloc>::operator[](size_type i) const {
   i = (dq._head + i) % dq._capacity;
@@ -648,18 +633,12 @@ bool operator>=(const deque<U, V> &lhs, const deque<U, V> &rhs) {
   return (!(lhs < rhs));
 }
 
-/* NON-MEMBER SWAP */
 template <typename T, class Alloc>
 void swap(deque<T, Alloc> &x, deque<T, Alloc> &y) {
   deque<T, Alloc> tmp = x;
   x = y;
   y = tmp;
 }
-
-// 888888  dP"Yb   dP"Yb  88     .dP"Y8
-//   88   dP   Yb dP   Yb 88     `Ybo.
-//   88   Yb   dP Yb   dP 88       `Y8b
-//   88    YbodP   YbodP  88ood8 8bodP'
 
 template <typename T, class Alloc>
 void deque<T, Alloc>::expand(size_type nb_chunks) {

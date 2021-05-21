@@ -6,13 +6,13 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 04:24:48 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 19:43:03 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 20:02:39 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MAP_TEST_HPP
 #define MAP_TEST_HPP
-#include "../includes/Containers.hpp"
+#include "../includes/containers.hpp"
 bool fncomp(char lhs, char rhs) { return lhs < rhs; }
 
 struct classcomp {

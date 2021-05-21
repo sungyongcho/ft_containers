@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:32:01 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 04:03:40 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 20:04:07 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -365,7 +365,6 @@ void list<T, Alloc>::pop_front() {
   }
 }
 
-/* iterators */
 template <typename T, class Alloc>
 typename list<T, Alloc>::const_iterator list<T, Alloc>::begin() const { return (const_iterator(_sentry->next)); }
 template <typename T, class Alloc>
@@ -386,7 +385,6 @@ typename list<T, Alloc>::const_reverse_iterator list<T, Alloc>::rend() const { r
 template <typename T, class Alloc>
 typename list<T, Alloc>::reverse_iterator list<T, Alloc>::rend() { return (reverse_iterator(begin())); }
 
-/* front */
 
 template <typename T, class Alloc>
 T &list<T, Alloc>::front() {
@@ -402,7 +400,6 @@ const T &list<T, Alloc>::front() const {
   return (_sentry->next->element);
 }
 
-/* back */
 template <typename T, class Alloc>
 T &list<T, Alloc>::back() {
   if (empty())
@@ -417,7 +414,6 @@ const T &list<T, Alloc>::back() const {
   return (_sentry->prev->element);
 }
 
-/* assign */
 template <typename T, class Alloc>
 template <typename I>
 void list<T, Alloc>::assign(I first, I last) {
@@ -434,7 +430,7 @@ void list<T, Alloc>::assign(size_type n, const value_type &val) {
 
 template <typename T, class Alloc>
 typename list<T, Alloc>::iterator list<T, Alloc>::insert(iterator position, const value_type &val) {
-  Node *it = bcast(position).ptr;  /// wow wtf
+  Node *it = bcast(position).ptr;
   insert_node(create_node(val), it->prev, it);
   _size++;
   return (position);
@@ -558,7 +554,7 @@ void list<T, Alloc>::merge(list<T, Alloc> &x) {
     while (it != end() && !(*it_x < *it))
       it++;
     next = fwd(it_x, 1);
-    splice(it, x, it_x);  // what does 'splice' do?
+    splice(it, x, it_x);
     it_x = next;
   }
 }
@@ -619,7 +615,6 @@ void list<T, Alloc>::reverse() {
   } while (current != _sentry);
 }
 
-/*operator overloads */
 
 template <typename T, class Alloc>
 const T &list<T, Alloc>::operator[](size_type i) const { return *(begin() + i); }
@@ -674,13 +669,13 @@ bool operator>=(const list<U, V> &lhs, const list<U, V> &rhs) {
   return (!(lhs < rhs));
 }
 
-/* NON-MEMBER SWAP */
 template <typename T, class Alloc>
 void swap(list<T, Alloc> &x, list<T, Alloc> &y) {
   list<T, Alloc> tmp = x;
   x = y;
   y = tmp;
 }
+
 }  // namespace ft
 
 #endif

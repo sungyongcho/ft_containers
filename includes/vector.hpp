@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/05 16:28:47 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 19:59:06 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 20:06:49 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -272,7 +272,6 @@ class vector {
       push_back(*it);
   }
 };
-
 
 template <typename T, class Alloc>
 void vector<T, Alloc>::realloc(size_t nsize) {

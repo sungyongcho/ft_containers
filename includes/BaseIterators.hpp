@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:12:52 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 08:02:29 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 20:01:04 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,9 +31,9 @@ template <typename T, class Alloc = std::allocator<T> >
 class vector;
 template <typename T, class Alloc = std::allocator<T> >
 class deque;
-template <typename T, typename C >
+template <typename T, typename C>
 class stack;
-template <typename T, typename C >
+template <typename T, typename C>
 class queue;
 
 template <typename T>
