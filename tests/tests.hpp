@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 03:11:43 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 20:20:36 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 21:10:57 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 #include <fstream>
 
+#include "../includes/containers.hpp"
 #include "deque_test.hpp"
 #include "list_test.hpp"
 #include "map_test.hpp"

@@ -6,11 +6,10 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 20:20:02 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 20:20:44 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 21:11:14 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/containers.hpp"
 #include "tests.hpp"
 
 int main(void) {

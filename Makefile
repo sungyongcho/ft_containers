@@ -6,7 +6,7 @@
 #    By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/05/21 20:08:27 by sucho             #+#    #+#              #
-#    Updated: 2021/05/21 20:39:35 by sucho            ###   ########.fr        #
+#    Updated: 2021/05/21 21:14:11 by sucho            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ NAME			=	cpp_module_tests
 
 CXX				=	clang++
 CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -pedantic
+DEBUG			=	-g -fsanitize=address
 RM				=	rm -f
 
 SRCS			=	main.cpp
@@ -35,7 +36,10 @@ OBJS			=	$(SRCS:.cpp=.o)
 
 all:				$(NAME)
 
-$(NAME):			$(VECTOR) $(LIST) $(MAP) $(DEQUE) $(STACK) $(QUEUE)
+$(NAME):			$(OBJS)
+						@$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS)
+						@./$(NAME)
+						@rm $(NAME)
 
 $(VECTOR):			$(TESTS_DIR)/$(VECTOR)$(TEST_SUFFIX)
 						@$(CXX) $(CXXFLAGS) $(TESTS_DIR)/$(VECTOR)$(TEST_SUFFIX) -o $(NAME)
@@ -87,6 +91,12 @@ fclean:				clean
 
 re:					fclean $(NAME)
 
+test:				$(VECTOR) $(LIST) $(MAP) $(DEQUE) $(STACK) $(QUEUE)
+
+debug:				$(OBJS)
+						@$(CXX) $(CXXFLAGS) $(DEBUG) -o $(NAME) $(OBJS)
+						@./$(NAME)
+						@rm $(NAME)
 
 .PHONY:			all clean fclean re
 
