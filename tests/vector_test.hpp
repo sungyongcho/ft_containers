@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 03:10:02 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 04:12:26 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 19:59:50 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,26 +215,26 @@ void vector_test() {
       std::cout << ' ' << myvector[i];
     std::cout << '\n';
   }
-  // // assign
-  // {
-  //   C first;
-  //   C second;
-  //   C third;
+  // assign
+  {
+    C first;
+    C second;
+    C third;
 
-  //   first.assign(7, 100);  // 7 ints with a value of 100
+    first.assign(7, 100);  // 7 ints with a value of 100
 
-  //   iterator it;
-  //   it = first.begin() + 1;
+    iterator it;
+    it = first.begin() + 1;
 
-  //   second.assign(first.begin(), first.end()--);  // the 5 central values of first
+    second.assign(first.begin(), static_cast<iterator>(first.end()--));  // the 5 central values of first
 
-  //   int myints[] = {1776, 7, 4};
-  //   third.assign(myints, myints + 3);  // assigning from array.
+    int myints[] = {1776, 7, 4};
+    third.assign(myints, myints + 3);  // assigning from array.
 
-  //   std::cout << "Size of first: " << int(first.size()) << '\n';
-  //   std::cout << "Size of second: " << int(second.size()) << '\n';
-  //   std::cout << "Size of third: " << int(third.size()) << '\n';
-  // }
+    std::cout << "Size of first: " << int(first.size()) << '\n';
+    std::cout << "Size of second: " << int(second.size()) << '\n';
+    std::cout << "Size of third: " << int(third.size()) << '\n';
+  }
   //push_back , pop_back
   {
     C myvector;
@@ -250,30 +250,30 @@ void vector_test() {
 
     std::cout << "The elements of myvector add up to " << sum << '\n';
   }
-  // //insert
-  // {
-  //   C myvector(3, 100);
-  //   iterator it;
+  //insert
+  {
+    C myvector(3, 100);
+    iterator it;
 
-  //   it = myvector.begin();
-  //   it = myvector.insert(it, 200);
+    it = myvector.begin();
+    it = myvector.insert(it, 200);
 
-  //   myvector.insert(it, 2, 300);
+    myvector.insert(it, 2, 300);
 
-  //   // "it" no longer valid, get a new one:
-  //   it = myvector.begin();
+    // "it" no longer valid, get a new one:
+    it = myvector.begin();
 
-  //   C anothervector(2, 400);
-  //   myvector.insert(it + 2, anothervector.begin(), anothervector.end());
+    C anothervector(2, 400);
+    myvector.insert(it + 2, anothervector.begin(), anothervector.end());
 
-  //   int myarray[] = {501, 502, 503};
-  //   myvector.insert(myvector.begin(), myarray, myarray + 3);
+    int myarray[] = {501, 502, 503};
+    myvector.insert(myvector.begin(), myarray, myarray + 3);
 
-  //   std::cout << "myvector contains:";
-  //   for (it = myvector.begin(); it < myvector.end(); it++)
-  //     std::cout << ' ' << *it;
-  //   std::cout << '\n';
-  // }
+    std::cout << "myvector contains:";
+    for (it = myvector.begin(); it < myvector.end(); it++)
+      std::cout << ' ' << *it;
+    std::cout << '\n';
+  }
   {
     C myvector;
 

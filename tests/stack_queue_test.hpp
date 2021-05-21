@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 05:46:46 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 08:09:58 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 19:43:20 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "../includes/Containers.hpp"
 template <typename C>
 void stack_test() {
-  //empty()
+  // empty()
   {
     C mystack;
     int sum(0);
@@ -82,7 +82,7 @@ void stack_test() {
 
 template <typename C>
 void queue_test() {
-  //empty
+  // empty()
   {
     C myqueue;
     int sum(0);
