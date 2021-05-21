@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 04:24:48 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 20:02:39 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 20:48:19 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -323,8 +323,9 @@ void map_test() {
 
 template <typename C>
 void map_test_2() {
-  //operator[]
+  //operator[]sd
   {
+    std::cout << "=========operator[] TEST==========" << std::endl;
     C mymap;
 
     mymap['a'] = "an element";

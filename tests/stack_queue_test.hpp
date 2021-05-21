@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 05:46:46 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 20:02:39 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 20:52:15 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,24 +158,24 @@ void queue_test() {
   }
 }
 
-// template <typename C>
-// void stack_test_2()
-// {
-//   //constructors
-//   {
-//     std::deque<int> mydeque(3, 100);    // deque with 3 elements
-//     std::vector<int> myvector(2, 200);  // vector with 2 elements
+template <typename C1, typename C2, typename C3>
+void stack_test_2() {
+  //constructors
+  {
+    std::cout << "=============CONSTRUCTORS TEST======"<<std::endl;
+    C2 mydeque(3, 100);   // deque with 3 elements
+    C3 myvector(2, 200);  // vector with 2 elements
 
-//     C first;            // empty stack
-//     C second(mydeque);  // stack initialized to copy of deque
+    C1 first;            // empty stack
+    C1 second(mydeque);  // stack initialized to copy of deque
 
-//     // std::stack<int, std::vector<int> > third;  // empty stack using vector
-//     // std::stack<int, std::vector<int> > fourth(myvector);
+    std::stack<int, C3 > third;  // empty stack using vector
+    std::stack<int, C3 > fourth(myvector);
 
-//     std::cout << "size of first: " << first.size() << '\n';
-//     std::cout << "size of second: " << second.size() << '\n';
-//     // std::cout << "size of third: " << third.size() << '\n';
-//     // std::cout << "size of fourth: " << fourth.size() << '\n';
-//   }
-// }
+    std::cout << "size of first: " << first.size() << '\n';
+    std::cout << "size of second: " << second.size() << '\n';
+    std::cout << "size of third: " << third.size() << '\n';
+    std::cout << "size of fourth: " << fourth.size() << '\n';
+  }
+}
 #endif

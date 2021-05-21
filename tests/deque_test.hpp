@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 05:51:39 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 20:02:39 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 20:46:23 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -321,6 +321,7 @@ template <typename C>
 void deque_test_2() {
 // at()
   {
+    std::cout << "==========AT TEST==========" <<std::endl;
     C mydeque(10);  // 10 zero-initialized unsigneds
 
     // assign some values:

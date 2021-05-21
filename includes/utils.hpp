@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/04/28 00:13:03 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 20:06:36 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 20:13:25 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,16 +179,24 @@ template <typename T>
 struct is_integer { typedef struct FalseType type; };
 template <>
 struct is_integer<bool> { typedef struct TrueType type; };
+template <>
 struct is_integer<char> { typedef struct TrueType type; };
+template <>
 struct is_integer<char16_t> { typedef struct TrueType type; };
+template <>
 struct is_integer<char32_t> { typedef struct TrueType type; };
+template <>
 struct is_integer<wchar_t> { typedef struct TrueType type; };
+template <>
 struct is_integer<short> { typedef struct TrueType type; };
+template <>
 struct is_integer<int> { typedef struct TrueType type; };
+template <>
 struct is_integer<long> { typedef struct TrueType type; };
 struct TrueType {};
 struct FalseType {};
-
 }  // namespace ft
+
+
 
 #endif

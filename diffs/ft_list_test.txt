@@ -1,0 +1,40 @@
+The contents of fifth are: 16 2 77 29 
+mylist contains: 75 23 65 42 13
+mylist contains: 75 23 65 42 13
+mylist backwards: 5 4 3 2 1
+total: 55
+0. size: 0
+1. size: 10
+2. size: 20
+3. size: 19
+4. max_size: 768614336404564650
+mylist.front() is now 55
+mylist contains: 10 9 8 7 6 5 4 3 2 1 0
+Size of first: 3
+Size of second: 7
+mylist contains: 300 200 100 100
+Popping out the elements in mylist: 100 200 300
+Final size of mylist is 0
+Popping out the elements in mylist: 100 100 100
+Final size of mylist is 0
+mylist contains: 1 10 20 30 30 20 2 3 4 5
+mylist contains: 10 30 60 80 90
+first contains: 200 200 200 200 200
+second contains: 100 100 100
+mylist contains: 1 2 3 4 5 100 100 100 0 0 0 0
+mylist contains: 100 200 300
+mylist contains: 1101 2202
+mylist contains: 17 7 14
+mylist contains: 36 20
+mylist contains: 2 12 72
+mylist contains: Three one two
+mylist contains: one Three two
+mylist contains: 9 8 7 6 5 4 3 2 1
+a and b are equal
+b and c are not equal
+b is less than c
+c is greater than b
+a is less than or equal to b
+a is greater than or equal to b
+foo contains: 200 200 200 200 200
+bar contains: 100 100 100

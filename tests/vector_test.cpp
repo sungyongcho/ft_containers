@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.cpp                                           :+:      :+:    :+:   */
+/*   vector_test.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/20 23:19:00 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 20:19:10 by sucho            ###   ########.fr       */
+/*   Created: 2021/05/21 20:20:02 by sucho             #+#    #+#             */
+/*   Updated: 2021/05/21 20:20:44 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <fstream>
+#include "../includes/containers.hpp"
+#include "tests.hpp"
 
-#include "./includes/containers.hpp"
-#include "./tests/tests.hpp"
 int main(void) {
   std::streambuf *coutbuf = std::cout.rdbuf();
   {
@@ -26,22 +25,4 @@ int main(void) {
     vector_test<ft::vector<int> >();
     std::cout.rdbuf(coutbuf);
   }
-  // list_test<std::list<int> >();
-  // list_test<ft::list<int> >();
-
-  // map_test<std::map<char, int> >();
-  // map_test<ft::map<char, int> >();
-
-  // map_test_2<std::map<char, std::string> >();
-  // map_test_2<ft::map<char, std::string> >();
-
-  // deque_test<std::deque<int> >();
-  // deque_test<ft::deque<int> >();
-
-  // stack_test<std::stack<int> >();
-  // stack_test<ft::stack<int> >();
-
-  // queue_test<std::queue<int> >();
-  // queue_test<ft::queue<int> >();
 }
-

@@ -1,24 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tests.hpp                                          :+:      :+:    :+:   */
+/*   list_test.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/05/21 03:11:43 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 20:20:36 by sucho            ###   ########.fr       */
+/*   Created: 2021/05/21 20:20:02 by sucho             #+#    #+#             */
+/*   Updated: 2021/05/21 20:20:44 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TESTS_HPP
-#define TESTS_HPP
+#include "../includes/containers.hpp"
+#include "tests.hpp"
 
-#include <fstream>
+int main(void) {
+  std::streambuf *coutbuf = std::cout.rdbuf();
+  {
+    std::ofstream real("./diffs/std_list_test.txt");
+    std::cout.rdbuf(real.rdbuf());
+    list_test<std::list<int> >();
 
-#include "deque_test.hpp"
-#include "list_test.hpp"
-#include "map_test.hpp"
-#include "stack_queue_test.hpp"
-#include "vector_test.hpp"
-
-#endif
+    std::ofstream mine("./diffs/ft_list_test.txt");
+    std::cout.rdbuf(mine.rdbuf());
+    list_test<ft::list<int> >();
+    std::cout.rdbuf(coutbuf);
+  }
+}

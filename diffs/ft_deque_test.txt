@@ -1,0 +1,32 @@
+The contents of fifth are: 16 2 77 29
+Size of first: 0
+Size of second: 3
+mydeque contains: 1 2 3 4 5
+mydeque contains: 1 2 3 4 5
+0. size: 0
+1. size: 5
+2. size: 10
+3. size: 9
+4. max_size: 4611686018427387903
+mydeque contains: 1 2 3 4 5 100 100 100 0 0 0 0
+total: 55
+mydeque contains: 9 8 7 6 5 4 3 2 1 0
+mydeque.front() is now 57
+Size of first: 7
+Size of second: 5
+Size of third: 3
+mydeque contains: 100 200 300
+The elements of mydeque add up to 60
+Popping out the elements in mydeque: 100 200 300
+The final size of mydeque is 0
+mydeque contains: 1 20 30 30 20 10 2 3 4 5
+mydeque contains: 4 5 7 8 9 10
+foo contains: 200 200 200 200 200
+bar contains: 100 100 100
+foo and bar are not equal
+foo is less than bar
+foo is less than or equal to bar
+foo contains: 200 200 200 200 200
+bar contains: 100 100 100
+==========AT TEST==========
+mydeque contains: 0 1 2 3 4 5 6 7 8 9

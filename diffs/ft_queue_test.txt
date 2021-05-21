@@ -1,0 +1,9 @@
+total: 55
+0. size: 0
+1. size: 5
+2. size: 4
+myqueue.front() is now 61
+myqueue.back() is now 63
+myqueue.back() is now 63
+myqueue.back() before 1
+myqueue.back() after 2

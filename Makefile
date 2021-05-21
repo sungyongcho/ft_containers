@@ -1,98 +1,92 @@
-CC			=	clang++
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/05/21 20:08:27 by sucho             #+#    #+#              #
+#    Updated: 2021/05/21 20:39:35 by sucho            ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
 
-FWARN		=	-Wall -Wextra -Werror
-FSTD		=	-std=c++98 -pedantic
-FDEBUG		=	-g
-FOPTI		=	-O3 -Ofast
-FLAGS		=	$(FWARN) $(FDEBUG) $(FOPTI)
+NAME			=	cpp_module_tests
 
-NAME		=	tests
-SUFFIX		=	_tests.cpp
-DDIR		=	diffs
-TDIR		=	container_tests
-DIFF		=	./diff_script.sh
+CXX				=	clang++
+CXXFLAGS		=	-Wall -Wextra -Werror -std=c++98 -pedantic
+RM				=	rm -f
 
-VECTOR		=	vector
-LIST		=	list
-STACK		=	stack
-QUEUE		=	queue
-MAP			=	map
-MULTIMAP	=	multimap
-SET			=	set
-MULTISET	=	multiset
-DEQUE		=	deque
+SRCS			=	main.cpp
 
-all:	$(NAME)
+VECTOR			=	vector
+LIST			=	list
+STACK			=	stack
+QUEUE			=	queue
+MAP				=	map
+DEQUE			=	deque
 
-$(NAME) :	$(VECTOR) $(LIST) $(STACK) $(QUEUE) $(MAP) $(MULTIMAP) $(SET) $(MULTISET) $(DEQUE)
+DIFF_DIR		=	./diffs
+TESTS_DIR		=	tests
+TEST_SUFFIX		=	_test.cpp
+OUTPUT_SUFFIX	=	_test.txt
+DIFF_SCRIPT		=	./diff_script.sh
 
-correc:
-	$(CC) $(FWARN) -Wno-unused-local-typedef $(FSTD) correc.cpp
-	@./a.out
+OBJS			=	$(SRCS:.cpp=.o)
 
-$(MAP):	$(TDIR)/$(MAP)$(SUFFIX)
-	@printf "$(MAP) --> "
-	@$(CC) $(FWARN) $(FSTD) $(TDIR)/$(MAP)$(SUFFIX) -o $(NAME)
-	@./$(NAME)
-	@$(DIFF) $(DDIR)/my_map.txt $(DDIR)/real_map.txt
-	@rm $(NAME)
+all:				$(NAME)
 
-$(MULTIMAP):	$(TDIR)/$(MULTIMAP)$(SUFFIX)
-	@printf "$(MULTIMAP) --> "
-	@$(CC) $(FWARN) $(FSTD) $(TDIR)/$(MULTIMAP)$(SUFFIX) -o $(NAME)
-	@./$(NAME)
-	@$(DIFF) $(DDIR)/my_multimap.txt $(DDIR)/real_multimap.txt
-	@rm $(NAME)
+$(NAME):			$(VECTOR) $(LIST) $(MAP) $(DEQUE) $(STACK) $(QUEUE)
 
-$(LIST):	$(TDIR)/$(LIST)$(SUFFIX)
-	@printf "$(LIST) --> "
-	@$(CC) $(FWARN) $(FSTD) $(TDIR)/$(LIST)$(SUFFIX) -o $(NAME)
-	@./$(NAME)
-	@$(DIFF) $(DDIR)/my_list.txt $(DDIR)/real_list.txt
-	@rm $(NAME)
+$(VECTOR):			$(TESTS_DIR)/$(VECTOR)$(TEST_SUFFIX)
+						@$(CXX) $(CXXFLAGS) $(TESTS_DIR)/$(VECTOR)$(TEST_SUFFIX) -o $(NAME)
+						@./$(NAME)
+						@echo "[$(VECTOR)]"
+						@$(DIFF_SCRIPT) $(DIFF_DIR)/std_vector$(OUTPUT_SUFFIX) $(DIFF_DIR)/ft_vector$(OUTPUT_SUFFIX)
+						@rm $(NAME)
 
-$(VECTOR):	$(TDIR)/$(VECTOR)$(SUFFIX)
-	@printf "$(VECTOR) --> "
-	@$(CC) $(FWARN) $(FSTD) $(TDIR)/$(VECTOR)$(SUFFIX) -o $(NAME)
-	@./$(NAME)
-	@$(DIFF) $(DDIR)/my_vector.txt $(DDIR)/real_vector.txt
-	@rm $(NAME)
+$(LIST):			$(TESTS_DIR)/$(LIST)$(TEST_SUFFIX)
+						@$(CXX) $(CXXFLAGS) $(TESTS_DIR)/$(LIST)$(TEST_SUFFIX) -o $(NAME)
+						@./$(NAME)
+						@echo "[$(LIST)]"
+						@$(DIFF_SCRIPT) $(DIFF_DIR)/std_list$(OUTPUT_SUFFIX) $(DIFF_DIR)/ft_list$(OUTPUT_SUFFIX)
+						@rm $(NAME)
 
-$(STACK):	$(TDIR)/$(STACK)$(SUFFIX)
-	@printf "$(STACK) --> "
-	@$(CC) $(FWARN) $(FSTD) $(TDIR)/$(STACK)$(SUFFIX) -o $(NAME)
-	@./$(NAME)
-	@$(DIFF) $(DDIR)/my_stack.txt $(DDIR)/real_stack.txt
-	@rm $(NAME)
+$(MAP):				$(TESTS_DIR)/$(MAP)$(TEST_SUFFIX)
+						@$(CXX) $(CXXFLAGS) $(TESTS_DIR)/$(MAP)$(TEST_SUFFIX) -o $(NAME)
+						@./$(NAME)
+						@echo "[$(MAP)]"
+						@$(DIFF_SCRIPT) $(DIFF_DIR)/std_map$(OUTPUT_SUFFIX) $(DIFF_DIR)/ft_map$(OUTPUT_SUFFIX)
+						@rm $(NAME)
 
-$(SET):	$(TDIR)/$(SET)$(SUFFIX)
-	@printf "$(SET) --> "
-	@$(CC) $(FWARN) $(FSTD) $(TDIR)/$(SET)$(SUFFIX) -o $(NAME)
-	@./$(NAME)
-	@$(DIFF) $(DDIR)/my_set.txt $(DDIR)/real_set.txt
-	@rm $(NAME)
+$(DEQUE):			$(TESTS_DIR)/$(DEQUE)$(TEST_SUFFIX)
+						@$(CXX) $(CXXFLAGS) $(TESTS_DIR)/$(DEQUE)$(TEST_SUFFIX) -o $(NAME)
+						@./$(NAME)
+						@echo "[$(DEQUE)]"
+						@$(DIFF_SCRIPT) $(DIFF_DIR)/std_deque$(OUTPUT_SUFFIX) $(DIFF_DIR)/ft_deque$(OUTPUT_SUFFIX)
+						@rm $(NAME)
 
-$(MULTISET):	$(TDIR)/$(MULTISET)$(SUFFIX)
-	@printf "$(MULTISET) --> "
-	@$(CC) $(FWARN) $(FSTD) $(TDIR)/$(MULTISET)$(SUFFIX) -o $(NAME)
-	@./$(NAME)
-	@$(DIFF) $(DDIR)/my_multiset.txt $(DDIR)/real_multiset.txt
-	@rm $(NAME)
+$(STACK):			$(TESTS_DIR)/$(STACK)$(TEST_SUFFIX)
+						@$(CXX) $(CXXFLAGS) $(TESTS_DIR)/$(STACK)$(TEST_SUFFIX) -o $(NAME)
+						@./$(NAME)
+						@echo "[$(STACK)]"
+						@$(DIFF_SCRIPT) $(DIFF_DIR)/std_stack$(OUTPUT_SUFFIX) $(DIFF_DIR)/ft_stack$(OUTPUT_SUFFIX)
+						@rm $(NAME)
 
-$(DEQUE):	$(TDIR)/$(DEQUE)$(SUFFIX)
-	@printf "$(DEQUE) --> "
-	@$(CC) $(FWARN) $(FSTD) $(TDIR)/$(DEQUE)$(SUFFIX) -o $(NAME)
-	@./$(NAME)
-	@$(DIFF) $(DDIR)/my_deque.txt $(DDIR)/real_deque.txt
-	@rm $(NAME)
+$(QUEUE):			$(TESTS_DIR)/$(QUEUE)$(TEST_SUFFIX)
+						@$(CXX) $(CXXFLAGS) $(TESTS_DIR)/$(QUEUE)$(TEST_SUFFIX) -o $(NAME)
+						@./$(NAME)
+						@echo "[$(QUEUE)]"
+						@$(DIFF_SCRIPT) $(DIFF_DIR)/std_queue$(OUTPUT_SUFFIX) $(DIFF_DIR)/ft_queue$(OUTPUT_SUFFIX)
+						@rm $(NAME)
 
-$(QUEUE):	$(TDIR)/$(QUEUE)$(SUFFIX)
-	@printf "$(QUEUE) --> "
-	@$(CC) $(FWARN) $(FSTD) $(TDIR)/$(QUEUE)$(SUFFIX) -o $(NAME)
-	@./$(NAME)
-	@$(DIFF) $(DDIR)/my_queue.txt $(DDIR)/real_queue.txt
-	@rm $(NAME)
+clean:
+						$(RM) $(OBJS)
 
-zone: zone.cpp
-	@$(CC) $(FWARN) $(FSTD) zone.cpp -o zone
-	@./zone
+fclean:				clean
+						$(RM) $(NAME)
+
+re:					fclean $(NAME)
+
+
+.PHONY:			all clean fclean re
+
