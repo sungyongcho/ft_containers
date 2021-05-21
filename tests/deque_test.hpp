@@ -6,18 +6,19 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 05:51:39 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 07:44:33 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 19:40:46 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DEQUE_TEST_HPP
 #define DEQUE_TEST_HPP
 #include "../includes/Containers.hpp"
+
 template <typename C>
 void deque_test() {
   typedef typename C::size_type size_type;
   typedef typename C::iterator iterator;
-  // // typedef typename C::reverse_iterator reverse_iterator;
+  // typedef typename C::reverse_iterator reverse_iterator;
 
   // constructors
   {
@@ -48,7 +49,7 @@ void deque_test() {
     std::cout << "Size of first: " << int(first.size()) << '\n';
     std::cout << "Size of second: " << int(second.size()) << '\n';
   }
-  //begin
+  // begin()
   {
     C mydeque;
 
@@ -63,7 +64,7 @@ void deque_test() {
 
     std::cout << '\n';
   }
-  //end
+  // end()
   {
     C mydeque;
 
@@ -78,7 +79,7 @@ void deque_test() {
 
     std::cout << '\n';
   }
-  //size, max_size
+  // size(), max_size()
   {
     C myints;
     std::cout << "0. size: " << myints.size() << '\n';
@@ -95,7 +96,7 @@ void deque_test() {
     std::cout << "4. max_size: " << myints.max_size() << '\n';
   }
 
-  //resize
+  // resize()
   {
     C mydeque;
     iterator it;
@@ -112,7 +113,7 @@ void deque_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  // empty
+  // empty()
   {
     C mydeque;
     int sum(0);
@@ -148,7 +149,7 @@ void deque_test() {
       std::cout << ' ' << mydeque[i];
     std::cout << '\n';
   }
-  //front, back
+  // front(), back()
   {
     C mydeque;
 
@@ -159,7 +160,7 @@ void deque_test() {
 
     std::cout << "mydeque.front() is now " << mydeque.front() << '\n';
   }
-  //assign
+  // assign()
   {
     C first;
     C second;
@@ -179,7 +180,7 @@ void deque_test() {
     std::cout << "Size of second: " << int(second.size()) << '\n';
     std::cout << "Size of third: " << int(third.size()) << '\n';
   }
-  //push_back, push_front
+  // push_back(), push_front()
   {
     C mydeque(1, 200);  // two ints with a value of 100
     mydeque.push_front(100);
@@ -190,7 +191,7 @@ void deque_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  //pop_back
+  // pop_back()
   {
     C mydeque;
     int sum(0);
@@ -205,7 +206,7 @@ void deque_test() {
 
     std::cout << "The elements of mydeque add up to " << sum << '\n';
   }
-  //pop_front
+  // pop_front()
   {
     C mydeque;
 
@@ -221,7 +222,7 @@ void deque_test() {
 
     std::cout << "\nThe final size of mydeque is " << int(mydeque.size()) << '\n';
   }
-  //insert
+  // insert()
   {
     C mydeque;
 
@@ -248,7 +249,7 @@ void deque_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  //erase
+  // erase()
   {
     C mydeque;
 
@@ -266,7 +267,7 @@ void deque_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  //swap
+  // swap()
   {
     C foo(3, 100);  // three ints with a value of 100
     C bar(5, 200);  // five ints with a value of 200
@@ -284,7 +285,7 @@ void deque_test() {
     std::cout << '\n';
   }
 
-  //relational_operators
+  // relational_operators
   {
     C foo(3, 100);  // three ints with a value of 100
     C bar(2, 200);  // two ints with a value of 200
@@ -296,7 +297,7 @@ void deque_test() {
     if (foo <= bar) std::cout << "foo is less than or equal to bar\n";
     if (foo >= bar) std::cout << "foo is greater than or equal to bar\n";
   }
-  // swap non-member
+  // swap() (non-member)
   {
     C foo(3, 100);  // three ints with a value of 100
     C bar(5, 200);  // five ints with a value of 200
@@ -317,8 +318,8 @@ void deque_test() {
 
 // for ::deque<unsigned>
 template <typename C>
-void deque_test_1() {
-  //at
+void deque_test_2() {
+// at()
   {
     C mydeque(10);  // 10 zero-initialized unsigneds
 

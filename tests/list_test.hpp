@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 03:13:02 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 04:24:18 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 19:40:44 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void list_test() {
   // typedef typename C::size_type size_type;
   typedef typename C::iterator iterator;
   typedef typename C::reverse_iterator reverse_iterator;
-
+  // constructors()
   {
     // constructors used in the same order as described above:
     C first;                                // empty list of ints
@@ -64,7 +64,7 @@ void list_test() {
       std::cout << *it << ' ';
     std::cout << std::endl;
   }
-  // begin
+  // begin()
   {
     int myints[] = {75, 23, 65, 42, 13};
     C mylist(myints, myints + 5);
@@ -76,7 +76,7 @@ void list_test() {
     std::cout << '\n';
     ;
   }
-  // end
+  // end()
   {
     int myints[] = {75, 23, 65, 42, 13};
     C mylist(myints, myints + 5);
@@ -87,6 +87,7 @@ void list_test() {
 
     std::cout << '\n';
   }
+  // rbegin(), rend()
   {
     C mylist;
     for (int i = 1; i <= 5; ++i) mylist.push_back(i);
@@ -97,18 +98,7 @@ void list_test() {
 
     std::cout << '\n';
   }
-  //rend
-  {
-    C mylist;
-    for (int i = 1; i <= 5; ++i) mylist.push_back(i);
-
-    std::cout << "mylist backwards:";
-    for (reverse_iterator rit = mylist.rbegin(); rit != mylist.rend(); ++rit)
-      std::cout << ' ' << *rit;
-
-    std::cout << '\n';
-  }
-  //empty
+  // empty()
   {
     C mylist;
     int sum(0);
@@ -122,7 +112,7 @@ void list_test() {
 
     std::cout << "total: " << sum << '\n';
   }
-  //size, max_size
+  //size(), max_size()
   {
     C myints;
     std::cout << "0. size: " << myints.size() << '\n';
@@ -138,7 +128,7 @@ void list_test() {
 
     std::cout << "4. max_size: " << myints.max_size() << '\n';
   }
-  //front
+  // front()
   {
     C mylist;
 
@@ -151,7 +141,7 @@ void list_test() {
 
     std::cout << "mylist.front() is now " << mylist.front() << '\n';
   }
-  //back
+  // back()
   {
     C mylist;
 
@@ -167,7 +157,7 @@ void list_test() {
 
     std::cout << '\n';
   }
-  // assign
+  // assign()
   {
     C first;
     C second;
@@ -182,7 +172,7 @@ void list_test() {
     std::cout << "Size of first: " << int(first.size()) << '\n';
     std::cout << "Size of second: " << int(second.size()) << '\n';
   }
-  //push_front
+  // push_front()
   {
     C mylist(2, 100);  // two ints with a value of 100
     mylist.push_front(200);
@@ -194,7 +184,7 @@ void list_test() {
 
     std::cout << '\n';
   }
-  //push_back, pop_front
+  // push_back(), pop_front()
   {
     C mylist;
     mylist.push_back(100);
@@ -224,7 +214,7 @@ void list_test() {
 
     std::cout << "\nFinal size of mylist is " << mylist.size() << '\n';
   }
-  //insert
+  // insert()
   {
     C mylist;
     iterator it;
@@ -251,7 +241,7 @@ void list_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  //erase
+  // erase()
   {
     C mylist;
     iterator it1, it2;
@@ -281,7 +271,7 @@ void list_test() {
       std::cout << ' ' << *it1;
     std::cout << '\n';
   }
-  //swap
+  // swap()
   {
     C first(3, 100);   // three ints with a value of 100
     C second(5, 200);  // five ints with a value of 200
@@ -298,7 +288,7 @@ void list_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  //resize
+  // resize()
   {
     C mylist;
 
@@ -315,6 +305,7 @@ void list_test() {
 
     std::cout << '\n';
   }
+  // clear()
   {
     C mylist;
     iterator it;
@@ -337,7 +328,7 @@ void list_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  //splice
+  // // splice()
   // {
   //   C list1;
   //   C list2;
@@ -367,7 +358,7 @@ void list_test() {
   //   std::cout << "list1: " << list1 << "\n";
   //   std::cout << "list2: " << list2 << "\n";
   // }
-  //remove
+  // remove()
   {
     int myints[] = {17, 89, 7, 14};
     C mylist(myints, myints + 4);
@@ -379,7 +370,7 @@ void list_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  //remove_if
+  // remove_if()
   {
     int myints[] = {15, 36, 7, 17, 20, 39, 4, 1};
     C mylist(myints, myints + 8);  // 15 36 7 17 20 39 4 1
@@ -393,7 +384,7 @@ void list_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  //unique
+  // unique()
   {
     double mydoubles[] = {12.15, 2.72, 73.0, 12.77, 3.14,
                           12.77, 73.35, 72.25, 15.3, 72.25};
@@ -415,7 +406,7 @@ void list_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  //sort
+  // sort()
   {
     std::list<std::string> mylist;
     std::list<std::string>::iterator it;
@@ -437,7 +428,7 @@ void list_test() {
       std::cout << ' ' << *it;
     std::cout << '\n';
   }
-  //reverse
+  // reverse()
   {
     C mylist;
 
@@ -451,7 +442,7 @@ void list_test() {
 
     std::cout << '\n';
   }
-  //relational operators
+  // relational operators
   {
     C a;
     a.push_back(10);
@@ -475,6 +466,7 @@ void list_test() {
     if (a <= b) std::cout << "a is less than or equal to b\n";
     if (a >= b) std::cout << "a is greater than or equal to b\n";
   }
+// swap (non-member)
   {
     C foo(3, 100);  // three ints with a value of 100
     C bar(5, 200);  // five ints with a value of 200
