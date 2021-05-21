@@ -6,7 +6,7 @@
 /*   By: sucho <sucho@student.42seoul.kr>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/05/21 04:24:48 by sucho             #+#    #+#             */
-/*   Updated: 2021/05/21 05:42:41 by sucho            ###   ########.fr       */
+/*   Updated: 2021/05/21 19:43:03 by sucho            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void map_test() {
   typedef typename C::reverse_iterator reverse_iterator;
   typedef typename C::key_compare key_compare;
 
-  //constructor
+  // constructors
   {
     C first;
 
@@ -45,7 +45,7 @@ void map_test() {
 
     std::cout << "no output" << std::endl;
   }
-  // = operator
+  // =operator
   {
     C first;
     C second;
@@ -60,7 +60,7 @@ void map_test() {
     std::cout << "Size of first: " << first.size() << '\n';
     std::cout << "Size of second: " << second.size() << '\n';
   }
-  // = operator , begin, end
+  // =operator, begin(), end()
   {
     C mymap;
 
@@ -72,7 +72,7 @@ void map_test() {
     for (iterator it = mymap.begin(); it != mymap.end(); ++it)
       std::cout << it->first << " => " << it->second << '\n';
   }
-  //rbegin, rend
+  // rbegin(), rend()
   {
     C mymap;
 
@@ -85,7 +85,7 @@ void map_test() {
     for (rit = mymap.rbegin(); rit != mymap.rend(); ++rit)
       std::cout << rit->first << " => " << rit->second << '\n';
   }
-  //empty
+  // empty()
   {
     C mymap;
 
@@ -98,7 +98,7 @@ void map_test() {
       mymap.erase(mymap.begin());
     }
   }
-  //size
+  // size()
   {
     C mymap;
     mymap['a'] = 101;
@@ -108,7 +108,7 @@ void map_test() {
     std::cout << "mymap.size() is " << mymap.size() << '\n';
     std::cout << "mymap.max_size() is " << mymap.max_size() << '\n';
   }
-  //insert
+  // insert()
   {
     C mymap;
 
@@ -141,7 +141,7 @@ void map_test() {
     for (it = anothermap.begin(); it != anothermap.end(); ++it)
       std::cout << it->first << " => " << it->second << '\n';
   }
-  //erase
+  // erase()
   {
     C mymap;
     iterator it;
@@ -166,6 +166,7 @@ void map_test() {
     for (it = mymap.begin(); it != mymap.end(); ++it)
       std::cout << it->first << " => " << it->second << '\n';
   }
+  // swap()
   {
     C foo, bar;
 
@@ -186,7 +187,7 @@ void map_test() {
     for (iterator it = bar.begin(); it != bar.end(); ++it)
       std::cout << it->first << " => " << it->second << '\n';
   }
-  //swap
+  // clear()
   {
     C mymap;
 
@@ -206,27 +207,7 @@ void map_test() {
     for (iterator it = mymap.begin(); it != mymap.end(); ++it)
       std::cout << it->first << " => " << it->second << '\n';
   }
-  //clear
-  {
-    C mymap;
-
-    mymap['x'] = 100;
-    mymap['y'] = 200;
-    mymap['z'] = 300;
-
-    std::cout << "mymap contains:\n";
-    for (iterator it = mymap.begin(); it != mymap.end(); ++it)
-      std::cout << it->first << " => " << it->second << '\n';
-
-    mymap.clear();
-    mymap['a'] = 1101;
-    mymap['b'] = 2202;
-
-    std::cout << "mymap contains:\n";
-    for (iterator it = mymap.begin(); it != mymap.end(); ++it)
-      std::cout << it->first << " => " << it->second << '\n';
-  }
-  //key_comp
+  // key_comp()
   {
     C mymap;
 
@@ -247,6 +228,7 @@ void map_test() {
 
     std::cout << '\n';
   }
+  // value_comp()
   {
     C mymap;
 
@@ -263,7 +245,7 @@ void map_test() {
       std::cout << it->first << " => " << it->second << '\n';
     } while (mymap.value_comp()(*it++, highest));
   }
-  //find
+  // find()
   {
     C mymap;
     iterator it;
@@ -283,7 +265,7 @@ void map_test() {
     std::cout << "c => " << mymap.find('c')->second << '\n';
     std::cout << "d => " << mymap.find('d')->second << '\n';
   }
-  //count
+  // count()
   {
     C mymap;
     char c;
@@ -300,7 +282,7 @@ void map_test() {
         std::cout << " is not an element of mymap.\n";
     }
   }
-  //lower_bound, upper_bound
+  // lower_bound(), upper_bound()
   {
     C mymap;
     iterator itlow, itup;
@@ -320,7 +302,7 @@ void map_test() {
     for (iterator it = mymap.begin(); it != mymap.end(); ++it)
       std::cout << it->first << " => " << it->second << '\n';
   }
-  //equal_range
+  // equal_range()
   {
     C mymap;
 
